@@ -1,0 +1,60 @@
+name: Infrastructure
+description: Verify or deploy infrastructure to Azure
+
+inputs:
+  deploy:
+    description: 'Whether to deploy the infrastructure'
+    required: true
+    default: "false"
+  resource_group:
+    description: 'The resource group to deploy to'
+    required: true
+  subscription_id:
+    description: 'The subscription to deploy to'
+    required: true
+  parameter_file:
+    description: 'The parameter file to use'
+    required: true
+  environment:
+    description: 'The environment to deploy to'
+    required: true
+    default: 'dev'
+  template_file:
+    description: 'The template file to use'
+    required: true
+    default: 'main.bicep'
+  azure_credentials:
+    description: 'The credentials to use to login to Azure'
+    required: true
+
+
+outputs:
+  function_app_name:
+    description: 'The name of the function app'
+    value: ${{ steps.infra.outputs.functionAppName }}
+  static_web_app_name:
+    description: 'The name of the static web app'
+    value: ${{ steps.infra.outputs.staticWebAppName }}
+
+runs:
+  using: composite
+
+  steps:
+    - uses: actions/checkout@v3
+      
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.azure_credentials }}
+            
+    - name: Verify or deploy infrastructure
+      uses: azure/arm-deploy@v1
+      id: infra
+      with:
+        subscriptionId: ${{ inputs.subscriptionId }}
+        resourceGroupName: ${{ inputs.resource_group }}
+        template: ${{ inputs.template_file }}
+        parameters: ${{ inputs.parameter_file }}
+        failOnStdErr: true
+        scope: "resourcegroup"
+        deploymentMode: ${{ inputs.deploy == 'true' && 'Incremental' || 'Validate' }}

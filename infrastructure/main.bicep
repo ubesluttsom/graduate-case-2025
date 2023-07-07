@@ -2,9 +2,15 @@
 param appName string
 
 @description('Environment to deploy to.')
+@allowed([
+  'dev'
+  'test'
+  'prod'
+])
 param environment string
 
 @description('Name of the storage account to create.')
+@maxLength(19)
 param stAccountName string
 
 @description('Location for all resources.')
@@ -20,6 +26,7 @@ param swaRegion string = 'westeurope'
 param cosmosRegion string = 'westeurope'
 
 @description('Name of the project.')
+@maxLength(17)
 param projectName string = 'project'
 
 var funcAppName = 'func-${appName}-${environment}-${region}-${instance}' 

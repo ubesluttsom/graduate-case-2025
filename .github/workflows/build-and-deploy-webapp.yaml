@@ -1,0 +1,46 @@
+name: Build and deploy web app
+run-name: Build and deploy web app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'project/web/**'
+
+env:
+    WEB_APP_LOCATION: project/web
+    WEB_APP_ARTIFACT_LOCATION: dist # relative to WEB_APP_LOCATION
+    INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/main.bicep
+    INFRASTRUCTURE_PARAMETER_LOCATION: ./infrastructure/parameters/common.json
+
+jobs:
+  build:
+    name: Build web app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build web app
+        uses: ./.github/actions/build-web-app
+        with:
+          web_app_location: ${{ env.WEB_APP_LOCATION }}
+
+  deploy-dev:
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+        - name: Checkout repo
+          uses: actions/checkout@v3
+
+        - name: Deploy web app
+          uses: ./.github/actions/deploy-web-app
+          with:
+              web_app_location: ${{ env.WEB_APP_LOCATION }}
+              web_app_artifact_location: ${{ env.WEB_APP_ARTIFACT_LOCATION }}
+              azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+              deployment_token: ${{ secrets.WEBAPP_DEPLOYMENT_TOKEN }}

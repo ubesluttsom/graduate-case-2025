@@ -1,0 +1,40 @@
+name: Build and test web app
+run-name: Build and test web app
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'project/web/**'
+      - .github/workflows/build-and-test-webapp.yaml
+      - .github/actions/build-web-app/**
+
+env:
+  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/main.bicep
+  INFRASTRUCTURE_PARAMETER_LOCATION: ./infrastructure/parameters/common.json
+  WEB_APP_LOCATION: project/web
+  WEB_APP_ARTIFACT_LOCATION: dist # relative to WEB_APP_LOCATION
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build web app
+        uses: ./.github/actions/build-web-app
+        with:
+          web_app_location: ${{ env.WEB_APP_LOCATION }}
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests
+        working-directory: ${{ env.WEB_APP_LOCATION }}
+        run: echo "Run tests"

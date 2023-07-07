@@ -1,0 +1,45 @@
+name: Infrastructure
+run-name: ${{ (github.event_name == 'pull_request' || github.event.inputs.deploy == 'false') && 'Verify' || 'Deploy' }} infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+      deploy:
+        description: 'Deploy (true) or verify (false)'
+        required: true
+        default: 'false'
+  pull_request:
+    branches: [main]
+    paths:
+      - infrastructure/**
+      - .github/workflows/verify-or-deploy-infrastructure.yaml
+  push:
+    branches: [main]
+    paths:
+      - infrastructure/**
+
+env:
+  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/main.bicep
+  INFRASTRUCTURE_PARAMETER_LOCATION: ./infrastructure/parameters/common.json
+
+jobs:
+ infrastructure:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: ${{ (github.event_name == 'pull_request' || github.event.inputs.deploy == 'false') && 'Verify' || 'Deploy' }} infrastructure
+        uses: ./.github/actions/infrastructure
+        with:
+            template_file: ${{ env.INFRASTRUCTURE_TEMPLATE_LOCATION }}
+            parameter_file: ${{ env.INFRASTRUCTURE_PARAMETER_LOCATION }}
+            azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+            resource_group: ${{ secrets.AZURE_RG }}
+            subscription_id: ${{ secrets.AZURE_SUBSCRIPTION }}
+            deploy: ${{ (github.event_name == 'push' || github.event.inputs.deploy) && github.ref == 'refs/heads/main' }}
+            environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
