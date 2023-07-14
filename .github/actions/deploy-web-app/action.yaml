@@ -14,9 +14,6 @@ inputs:
   github_token:
       description: 'The token to use to login to GitHub'
       required: true
-  web_app_name:
-      description: 'The name of the web app'
-      required: true
   deployment_token:
       description: 'The token to use to deploy the web app'
       required: true

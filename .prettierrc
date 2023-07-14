@@ -15,5 +15,13 @@
   "proseWrap": "preserve",
   "htmlWhitespaceSensitivity": "css",
   "endOfLine": "lf",
-  "embeddedLanguageFormatting": "auto"
+  "embeddedLanguageFormatting": "auto",
+  "overrides": [
+    {
+      "files": "*.cs",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
 }

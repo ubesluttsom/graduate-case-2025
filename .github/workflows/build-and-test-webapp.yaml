@@ -11,10 +11,7 @@ on:
       - .github/actions/build-web-app/**
 
 env:
-  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/main.bicep
-  INFRASTRUCTURE_PARAMETER_LOCATION: ./infrastructure/parameters/common.json
   WEB_APP_LOCATION: project/web
-  WEB_APP_ARTIFACT_LOCATION: dist # relative to WEB_APP_LOCATION
 
 jobs:
   build:

@@ -1,7 +1,9 @@
-import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
 
-const baseURL = process.env.BASE_URL || 'https://playwright.dev';
+const baseURL =
+  process.env.BASE_URL ||
+  'https://agreeable-smoke-07383f303.3.azurestaticapps.net';
 
 test('Accessibility test', async ({ page }) => {
   await page.goto(baseURL);
