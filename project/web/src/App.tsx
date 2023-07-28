@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, Button, ButtonGroup, Flex, Heading, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Flex
+      width="100vw"
+      height="100vh"
+      alignContent="center"
+      justifyContent="center"
+      backgroundColor="#f0f0f0"
+    >
+      <Box maxW="2xl" m="0 auto">
+        <Heading as="h1" textAlign="center" fontSize="5xl" mt="100px">
+          Welcome!
+        </Heading>
+        <Text fontSize="xl" textAlign="center" mt="30px">
+          Count: {count}
+        </Text>
+        <ButtonGroup>
+          <Button
+            w="fit-content"
+            p="4"
+            px="50px"
+            colorScheme="explore-yellow"
+            borderRadius="10px"
+            m="0 auto"
+            mt="8"
+            fontWeight="bold"
+            color="white"
+            fontSize="l"
+            onClick={() => setCount(count + 1)}
+          >
+            Add +1 to count
+          </Button>
+          <Button
+            w="fit-content"
+            p="4"
+            px="50px"
+            colorScheme="red"
+            borderRadius="10px"
+            m="0 auto"
+            mt="8"
+            fontWeight="bold"
+            color="white"
+            fontSize="l"
+            onClick={() => setCount(count - 1)}
+          >
+            Remove -1 from count
+          </Button>
+        </ButtonGroup>
+      </Box>
+    </Flex>
+  );
 }
 
 export default App
