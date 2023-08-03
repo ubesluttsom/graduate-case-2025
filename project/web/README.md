@@ -56,7 +56,27 @@ This project uses [ESLint](https://eslint.org/) and [Prettier](https://prettier.
 
 The web project uses Chackra UI for styling. See [Chakra UI](https://chakra-ui.com/) for more information.
 
-
 ## Testing
 
 See the [Test project](../../test/) for testing.
+
+## Authentication
+
+We make use of the MSAL library to handle authentication. See [MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md) for more information.
+One thing to get aquainted with is the [MSAL Hooks](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/hooks.md).
+
+### Authentication configuration
+
+The authentication configuration is defined in [./src/auth/AuthInstance.tsx](./src/auth/AuthInstance.tsx). The configuration is used in [./src/main.tsx](./src/main.tsx) to initialize the MSAL instance.
+
+To be able to use the authentication configuration, you need to create a file called `.env.local` in the env folder. The file should contain the following:
+
+```env
+VITE_AUTH_CLIENT_ID=<client-id>
+```
+
+The client-id is the id of the Azure AD app registration. See [Azure AD app registration](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/40d44444-0d3e-4876-a8fd-16fa8014f2bf) for more information. And ask one of the developers for the client-id.
+
+### Authentication hooks
+
+We created a custom hook to get the access token. See [./src/auth/useAccessToken.tsx](./src/auth/useAccessToken.tsx) for more information.
