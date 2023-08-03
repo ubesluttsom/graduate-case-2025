@@ -12,6 +12,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.38.0",
+    "@azure/msal-react": "^1.5.9",
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
