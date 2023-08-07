@@ -75,7 +75,7 @@ To be able to use the authentication configuration, you need to create a file ca
 VITE_AUTH_CLIENT_ID=<client-id>
 ```
 
-The client-id is the id of the Azure AD app registration. See [Azure AD app registration](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/40d44444-0d3e-4876-a8fd-16fa8014f2bf) for more information. And ask one of the developers for the client-id.
+The client-id is the id of the Azure AD app registration. See [Azure AD app registration](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Overview/appId/40d44444-0d3e-4876-a8fd-16fa8014f2bf) for more information.
 
 ### Authentication hooks
 
