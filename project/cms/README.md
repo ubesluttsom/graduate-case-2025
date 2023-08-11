@@ -30,6 +30,8 @@ Add a `local.settings.json` file with the following content in the CMS project's
 }
 ```
 
+See [./Explore.Cms/local.settings.example.json](./Explore.Cms/local.settings.example.json) for an example. 
+
 ### Running the project
 
 Navigate to the [./Explore.Cms](./Explore.Cms) project. Then, make sure [Azurite](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) is running. See [Microsoft's guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#run-azurite) on how to start Azurite.

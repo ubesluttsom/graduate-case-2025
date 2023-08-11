@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Explore.Cms.Configuration.JsonConverters;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 
 namespace Explore.Cms.Helpers.Http;
 
@@ -53,6 +54,10 @@ public static class HttpRequestHelpers
 
     private static async Task<T> GetJsonBody<T>(HttpRequest req) where T : new()
     {
-        return BsonSerializer.Deserialize<T>(await req.ReadAsStringAsync());
+        return JsonSerializer.Deserialize<T>(await req.ReadAsStringAsync(), new JsonSerializerOptions()
+        {
+            Converters = { new ObjectIdJsonConverter() },
+            PropertyNameCaseInsensitive = true
+        }) ?? new T();
     }
 }

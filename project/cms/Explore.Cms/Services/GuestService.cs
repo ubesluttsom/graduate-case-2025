@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Explore.Cms.Configuration;
 using Explore.Cms.DAL;
@@ -16,12 +17,21 @@ public class GuestService : MongoRepository<Guest>, IGuestService
     public GuestService(IOptions<MongoDbOptions> options, ILogger<GuestService> logger) : base(options)
     {
         _logger = logger;
-        
-        var indexModel = new CreateIndexModel<Guest>(
+
+        var emailIndex = new CreateIndexModel<Guest>(
             new IndexKeysDefinitionBuilder<Guest>()
                 .Ascending(x => x.Email),
             new CreateIndexOptions() {  Unique = true });
-        Collection.Indexes.CreateOne(indexModel);
+
+        var userIdIndex = new CreateIndexModel<Guest>(
+            new IndexKeysDefinitionBuilder<Guest>()
+                .Ascending(x => x.UserId),
+            new CreateIndexOptions() { Unique = true }
+        );
+        
+        Collection.Indexes.CreateMany(new List<CreateIndexModel<Guest>>{
+            emailIndex, userIdIndex
+        });
     }
 
     public async Task<Guest> UpdateGuest(Guest guest)
