@@ -1,5 +1,5 @@
 name: Deploy web app
-description: Deploy the infrastructure, web app and api to Azure
+description: Deploy the web app to Azure
 
 inputs:
   web_app_location:

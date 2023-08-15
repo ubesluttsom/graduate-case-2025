@@ -1,0 +1,36 @@
+name: Build and test CMS
+run-name: Build and test CMS
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'cms/**'
+
+env:
+  DOTNET_APP_LOCATION: cms
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build CMS
+        uses: ./.github/actions/build-dotnet-app
+        with:
+          app_location: ${{ env.DOTNET_APP_LOCATION }}
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests
+        uses: ./.github/actions/test-dotnet-app
+        with:
+          app_location: ${{ env.DOTNET_APP_LOCATION }}

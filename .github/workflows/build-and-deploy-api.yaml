@@ -1,0 +1,43 @@
+name: Build and deploy dotnet app
+run-name: Build and deploy dotnet app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'project/api/**'
+
+env:
+    DOTNET_APP_LOCATION: project/api
+    DOTNET_APP_NAME: Company.Api
+
+jobs:
+  build:
+    name: Build function app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build function app
+        uses: ./.github/actions/build-dotnet-app
+        with:
+          app_location: ${{ env.DOTNET_APP_LOCATION }}
+
+  deploy-dev:
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+        - name: Checkout repo
+          uses: actions/checkout@v3
+
+        - name: Deploy function app
+          uses: ./.github/actions/deploy-azure-function-app
+          with:
+              app_location: ${{ env.DOTNET_APP_LOCATION }}
+              app_name: ${{ env.DOTNET_APP_NAME }}
+              publish_profile: ${{ secrets.PROJECT_API_PUBLISH_PROFILE }}

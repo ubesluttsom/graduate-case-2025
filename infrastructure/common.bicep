@@ -19,9 +19,6 @@ param region string = resourceGroup().location
 @description('Instance of the resources.')
 param instance string = '001'
 
-@description('Location for the Static Web App.')
-param swaRegion string = 'westeurope'
-
 @description('Location for the Cosmos DB.')
 param cosmosRegion string = 'westeurope'
 
@@ -30,9 +27,8 @@ param cosmosRegion string = 'westeurope'
 param projectName string = 'project'
 
 var funcAppName = 'func-${appName}-${environment}-${region}-${instance}' 
-var swaName = 'stapp-${appName}-${environment}-${region}-${instance}'
 var hostingPlanName = 'asp-${projectName}-${environment}-${region}-${instance}'
-var applicationInsightsName = 'appi-${projectName}-${environment}-${region}-${instance}'
+var applicationInsightsName = 'appi-${appName}-${environment}-${region}-${instance}'
 var cosmosDbName = 'cosmos-${projectName}-${environment}-${cosmosRegion}-${instance}'
 var storageAccountName = toLower('st${stAccountName}${instance}')
 
@@ -70,14 +66,6 @@ module applicationInsights 'applicationInsights.bicep' = {
   }
 }
 
-module staticWebApp 'staticWebApp.bicep' = {
-  name: swaName
-  params: {
-    name: swaName
-    region: swaRegion
-  }
-}
-
 module functionApp 'functionApp.bicep' = {
   name: funcAppName
   params: {
@@ -97,4 +85,3 @@ module functionApp 'functionApp.bicep' = {
 }
 
 output functionAppName string = functionApp.outputs.functionAppName
-output staticWebAppName string = staticWebApp.outputs.staticWebAppName

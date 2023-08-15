@@ -4,18 +4,6 @@
 	"parameters": {
 		"appName": {
 			"value": "IteraProject"
-		},
-
-        "stAccountName": {
-            "value": "iterabaseproject"
-        },
-
-		"environment":{
-			"value": "dev"
-		},
-
-		"projectName":{
-			"value": "project"
 		}
 	}
 }

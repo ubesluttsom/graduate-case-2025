@@ -1,5 +1,5 @@
-name: Infrastructure
-run-name: ${{ (github.event_name == 'pull_request' || github.event.inputs.deploy == 'false') && 'Verify' || 'Deploy' }} infrastructure
+name: CMS Infrastructure
+run-name: ${{ (github.event_name == 'pull_request' || github.event.inputs.deploy == 'false') && 'Verify' || 'Deploy' }} CMS infrastructure
 
 on:
   workflow_dispatch:
@@ -16,16 +16,16 @@ on:
     branches: [main]
     paths:
       - infrastructure/**
-      - .github/workflows/verify-or-deploy-infrastructure.yaml
+      - .github/workflows/verify-or-deploy-cms-infrastructure.yaml
   push:
     branches: [main]
     paths:
       - infrastructure/**
 
 env:
-  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/project.bicep
-  INFRASTRUCTURE_PARAMETER_LOCATION: ./project/infrastructure/parameters/parameters.json ./infrastructure/parameters/common-parameters.json
-  
+  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/common.bicep
+  INFRASTRUCTURE_PARAMETER_LOCATION: ./cms/infrastructure/parameters/parameters.json ./infrastructure/parameters/common-parameters.json
+
 jobs:
  infrastructure:
     runs-on: ubuntu-latest
