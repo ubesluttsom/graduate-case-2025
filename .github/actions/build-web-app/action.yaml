@@ -17,12 +17,12 @@ runs:
 
       - name: Install dependencies
         shell: bash
-        working-directory: ${{ env.WEB_APP_LOCATION }}
+        working-directory: ${{ inputs.web_app_location }}
         run: |
           npm ci
 
       - name: Build project
         shell: bash
-        working-directory: ${{ env.WEB_APP_LOCATION }}
+        working-directory: ${{ inputs.web_app_location }}
         run: |
           npm run build

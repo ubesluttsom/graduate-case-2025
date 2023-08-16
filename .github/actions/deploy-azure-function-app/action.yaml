@@ -28,5 +28,5 @@ runs:
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ inputs.app_name }}
-          package: '${{ inputs.app_location }}/output'
+          package: '${{ inputs.app_location }}'
           publish-profile: ${{ inputs.publish_profile }}

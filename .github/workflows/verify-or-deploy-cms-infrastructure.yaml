@@ -23,11 +23,31 @@ on:
       - infrastructure/**
 
 env:
-  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/common.bicep
-  INFRASTRUCTURE_PARAMETER_LOCATION: ./cms/infrastructure/parameters/parameters.json ./infrastructure/parameters/common-parameters.json
+  COMMON_INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/common.bicep
+  COMMON_INFRASTRUCTURE_PARAMETER_LOCATION: ./infrastructure/parameters/common.json ./cms/infrastructure/parameters/common.json
+  INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/project.bicep
+  CMS_INFRASTRUCTURE_PARAMETER_LOCATION: ./cms/infrastructure/parameters/parameters.json ./cms/infrastructure/parameters/common.json ./infrastructure/parameters/common.json
 
 jobs:
- infrastructure:
+  common-infrastructure:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: ${{ (github.event_name == 'pull_request' || github.event.inputs.deploy == 'false') && 'Verify' || 'Deploy' }} common infrastructure
+        uses: ./.github/actions/infrastructure
+        with:
+            template_file: ${{ env.COMMON_INFRASTRUCTURE_TEMPLATE_LOCATION }}
+            parameter_file: ${{ env.COMMON_INFRASTRUCTURE_PARAMETER_LOCATION }}
+            azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+            resource_group: ${{ secrets.AZURE_RG }}
+            subscription_id: ${{ secrets.AZURE_SUBSCRIPTION }}
+            deploy: ${{ (github.event_name == 'push' || github.event.inputs.deploy) && github.ref == 'refs/heads/main' }}
+            environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
+
+  infrastructure:
+    needs: [common-infrastructure]
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
     steps:
@@ -37,7 +57,7 @@ jobs:
         uses: ./.github/actions/infrastructure
         with:
             template_file: ${{ env.INFRASTRUCTURE_TEMPLATE_LOCATION }}
-            parameter_file: ${{ env.INFRASTRUCTURE_PARAMETER_LOCATION }}
+            parameter_file: ${{ env.CMS_INFRASTRUCTURE_PARAMETER_LOCATION }}
             azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
             resource_group: ${{ secrets.AZURE_RG }}
             subscription_id: ${{ secrets.AZURE_SUBSCRIPTION }}

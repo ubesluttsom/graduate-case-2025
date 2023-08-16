@@ -1,5 +1,5 @@
-name: Build and deploy dotnet app
-run-name: Build and deploy dotnet app
+name: Build and deploy CMS
+run-name: Build and deploy CMS
 
 on:
   workflow_dispatch:
@@ -11,6 +11,7 @@ on:
 env:
     DOTNET_APP_LOCATION: cms
     DOTNET_APP_NAME: Explore.Cms
+    OUTPUT_LOCATION: ${{ github.workspace }}/outputs/cms
 
 jobs:
   build:
@@ -25,6 +26,8 @@ jobs:
         uses: ./.github/actions/build-dotnet-app
         with:
           app_location: ${{ env.DOTNET_APP_LOCATION }}
+          app_name: ${{ env.DOTNET_APP_NAME }}
+          output_location: ${{ env.OUTPUT_LOCATION }}
 
   deploy-dev:
     needs: [build]
@@ -35,9 +38,15 @@ jobs:
         - name: Checkout repo
           uses: actions/checkout@v3
 
+        - name: Download build artifacts
+          uses: actions/download-artifact@v3
+          with:
+            name: ${{ env.DOTNET_APP_NAME }}
+            path: ${{ env.OUTPUT_LOCATION }}
+
         - name: Deploy CMS
           uses: ./.github/actions/deploy-azure-function-app
           with:
-              app_location: ${{ env.DOTNET_APP_LOCATION }}
+              app_location: ${{ env.OUTPUT_LOCATION }}
               app_name: ${{ env.DOTNET_APP_NAME }}
               publish_profile: ${{ secrets.PROJECT_API_PUBLISH_PROFILE }}

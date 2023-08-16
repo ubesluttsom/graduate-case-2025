@@ -19,6 +19,9 @@ param region string = resourceGroup().location
 @description('Instance of the resources.')
 param instance string = '001'
 
+@description('Deploy Static Web App?')
+param deploySwa bool = true
+
 @description('Location for the Static Web App.')
 param swaRegion string = 'westeurope'
 
@@ -29,23 +32,37 @@ param cosmosRegion string = 'westeurope'
 @maxLength(17)
 param projectName string = 'project'
 
+var funcAppName = 'func-${appName}-${environment}-${region}-${instance}' 
+var hostingPlanName = 'asp-${projectName}-${environment}-${region}-${instance}'
+var applicationInsightsName = 'appi-${appName}-${environment}-${region}-${instance}'
+var cosmosDbName = 'cosmos-${projectName}-${environment}-${cosmosRegion}-${instance}'
+var storageAccountName = toLower('st${stAccountName}${instance}')
 var swaName = 'stapp-${appName}-${environment}-${region}-${instance}'
 
-module commonModules 'common.bicep' = {
-  name: 'commonModules'
+module applicationInsights 'applicationInsights.bicep' = {
+  name: applicationInsightsName
   params: {
-    appName: appName
-    environment: environment
+    name: applicationInsightsName
     region: region
-    instance: instance
-    stAccountName: stAccountName
-    cosmosRegion: cosmosRegion
-    projectName: projectName
   }
 }
 
+module functionApp 'functionApp.bicep' = {
+  name: funcAppName
+  params: {
+    name: funcAppName
+    hostingPlanName: hostingPlanName
+    region: region
+    storageAccountName: storageAccountName
+    applicationInsightsName: applicationInsightsName
+    cosmosDbName: cosmosDbName
+  }
+  dependsOn: [
+    applicationInsights
+  ]
+}
 
-module staticWebApp 'staticWebApp.bicep' = {
+module staticWebApp 'staticWebApp.bicep' = if (deploySwa) {
   name: swaName
   params: {
     name: swaName

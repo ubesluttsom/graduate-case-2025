@@ -10,6 +10,8 @@ on:
 
 env:
   DOTNET_APP_LOCATION: cms
+  DOTNET_APP_NAME: Explore.Cms
+  OUTPUT_LOCATION: ${{ github.workspace }}/outputs/cms
 
 jobs:
   build:
@@ -22,6 +24,8 @@ jobs:
         uses: ./.github/actions/build-dotnet-app
         with:
           app_location: ${{ env.DOTNET_APP_LOCATION }}
+          app_name: ${{ env.DOTNET_APP_NAME }}
+          output_location: ${{ env.OUTPUT_LOCATION }}
 
   test:
     needs: build
