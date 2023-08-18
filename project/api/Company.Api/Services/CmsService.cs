@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Company.Api.Exceptions;
@@ -28,10 +29,21 @@ public class CmsService : ICmsService
     {
         return await PostAsync<GuestResponse>("guests", createGuest);
     }
-    
-    private async Task<T> GetAsync<T>(string url)
+
+    public async Task<GuestResponse> GetGuestByIdAsync(Guid userId)
+    {
+        return await GetAsync<GuestResponse>($"guests/{userId}");
+    }
+
+    private async Task<T> GetAsync<T>(string url) where T : new()
     {
         var response = await _httpClient.GetAsync(url);
+        
+        var statusCode = (int)response.StatusCode;
+
+        if (statusCode is > 399 and < 500)
+            return new T();
+        
         if (!response.IsSuccessStatusCode)
             throw new CmsException(await response.Content.ReadAsStringAsync());
 

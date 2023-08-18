@@ -14,11 +14,11 @@ public class TransactionResponseExample : OpenApiExample<GuestTransaction>
             "Successful response",
             new GuestTransaction()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = Guid.NewGuid(),
                 Amount = new decimal(100.99),
                 Description = "Example transaction",
-                GuestId = ObjectId.GenerateNewId(),
-                RoomId = ObjectId.GenerateNewId(),
+                GuestId = Guid.NewGuid(),
+                RoomId = Guid.NewGuid(),
             }, namingStrategy));
         return this;
     }

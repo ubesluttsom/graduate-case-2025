@@ -13,12 +13,11 @@ public class GuestResponseExample : OpenApiExample<Models.Guest>
             "Successful response",
             new Models.Guest()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = Guid.NewGuid(),
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "John.Doe@email.com",
-                UserId = Guid.NewGuid(),
-                RoomId = ObjectId.GenerateNewId()
+                RoomId = Guid.NewGuid()
             }, namingStrategy));
         return this;
     }

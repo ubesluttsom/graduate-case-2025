@@ -9,6 +9,6 @@ namespace Explore.Cms.Models;
 public class Room : Document
 {
     [BsonElement("roomNumber")] public int RoomNumber { get; set; } = -1;
-    [BsonElement("guestIds")] public List<ObjectId> GuestIds { get; init; } = new();
-    [BsonElement("transactionIds")] public List<ObjectId> TransactionIds { get; init; } = new();
+    [BsonElement("guestIds")] public List<Guid> GuestIds { get; init; } = new();
+    [BsonElement("transactionIds")] public List<Guid> TransactionIds { get; init; } = new();
 }

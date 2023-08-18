@@ -9,6 +9,7 @@ public class CreateGuestValidator : AbstractValidator<Guest>
     {
         RuleFor(x => x.FirstName).NotEmpty().WithMessage("A guest must have a first name");
         RuleFor(x => x.LastName).NotEmpty().WithMessage("A guest must have a last name");
+        RuleFor(x => x.Id).NotEqual(Guid.Empty).WithMessage("A guest must have an id");
         RuleFor(x => x.Email)
             .NotEmpty()
             .WithMessage("A guest must have an email")

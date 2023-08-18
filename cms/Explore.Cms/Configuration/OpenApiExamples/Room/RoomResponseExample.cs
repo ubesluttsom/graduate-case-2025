@@ -14,10 +14,10 @@ public class RoomResponseExample : OpenApiExample<Models.Room>
             "Successful response",
             new Models.Room()
             {
-                Id = ObjectId.GenerateNewId(),
-                GuestIds = new List<ObjectId>{ ObjectId.GenerateNewId() },
+                Id = Guid.NewGuid(),
+                GuestIds = new List<Guid>{ Guid.NewGuid() },
                 RoomNumber = 1,
-                TransactionIds = new List<ObjectId> { ObjectId.GenerateNewId() },
+                TransactionIds = new List<Guid> { Guid.NewGuid() },
             }, namingStrategy));
         return this;
     }

@@ -23,20 +23,15 @@ public class GuestService : MongoRepository<Guest>, IGuestService
                 .Ascending(x => x.Email),
             new CreateIndexOptions() {  Unique = true });
 
-        var userIdIndex = new CreateIndexModel<Guest>(
-            new IndexKeysDefinitionBuilder<Guest>()
-                .Ascending(x => x.UserId),
-            new CreateIndexOptions() { Unique = true }
-        );
-        
+
         Collection.Indexes.CreateMany(new List<CreateIndexModel<Guest>>{
-            emailIndex, userIdIndex
+            emailIndex
         });
     }
-
+    
     public async Task<Guest> UpdateGuest(Guest guest)
     {
-        if (guest.Id == ObjectId.Empty) return guest;
+        if (guest.Id == Guid.Empty) return guest;
 
         return await UpdateOneAsync(guest);
     }

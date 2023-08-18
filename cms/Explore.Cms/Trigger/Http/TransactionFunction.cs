@@ -34,23 +34,23 @@ public class TransactionFunction
     [FunctionName("GetTransaction")]
     [OpenApiOperation("GetTransaction", "Transactions", Summary = "Get one transaction", Description = "Get one transaction")]
     [OpenApiParameter("id", Description = "Id of the transaction", In = ParameterLocation.Path, Required = true,
-        Type = typeof(ObjectId))]
+        Type = typeof(Guid))]
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(GuestTransaction), Summary = "Ok response",
         Description = "This returns the response", Example = typeof(TransactionResponseExample))]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Summary = "Bad request response",
-        Description = "Bad request response when the id is not a valid ObjectId")]
+        Description = "Bad request response when the id is not a valid Guid")]
     [OpenApiResponseWithoutBody(HttpStatusCode.NotFound, Summary = "The not found response",
         Description = "The response when the transaction is not found")]
     public async Task<IActionResult> GetTransaction(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "transactions/{id}")]
         HttpRequest req, string id)
     {
-        var parseResult = ObjectId.TryParse(id, out var objectId);
+        var parseResult = Guid.TryParse(id, out var guid);
         if (!parseResult) return new BadRequestObjectResult("Invalid id");
         
-        var transaction = await _transactionService.FindOneByIdAsync(objectId);
+        var transaction = await _transactionService.FindOneByIdAsync(guid);
 
-        return transaction.Id == ObjectId.Empty ? new NotFoundResult() : new OkObjectResult(transaction);
+        return transaction.Id == Guid.Empty ? new NotFoundResult() : new OkObjectResult(transaction);
     }
     
 
@@ -74,7 +74,7 @@ public class TransactionFunction
         var transaction = validatedRequest.Value;
 
         var room = await _roomService.FindOneByIdAsync(transaction.RoomId);
-        if (room.Id == ObjectId.Empty) return new NotFoundObjectResult("Room does not exist.");
+        if (room.Id == Guid.Empty) return new NotFoundObjectResult("Room does not exist.");
 
 
         try
@@ -98,7 +98,7 @@ public class TransactionFunction
         }
         
         var createdTransaction = await _transactionService.FindOneByIdAsync(transaction.Id);
-        if (createdTransaction.Id == ObjectId.Empty) return new ConflictObjectResult("Could not create transaction");
+        if (createdTransaction.Id == Guid.Empty) return new ConflictObjectResult("Could not create transaction");
 
         return new CreatedResult($"guest/{createdTransaction.Id}", createdTransaction);
     }

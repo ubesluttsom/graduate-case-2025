@@ -12,12 +12,12 @@ public interface IMongoRepository<TDocument> where TDocument : IDocument
     Task AddOneAsync(TDocument doc);
     void DeleteOne(Expression<Func<TDocument, bool>> filterExpression);
     Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression);
-    TDocument FindOneById(ObjectId id);
-    Task<TDocument> FindOneByIdAsync(ObjectId id);
+    TDocument FindOneById(Guid id);
+    Task<TDocument> FindOneByIdAsync(Guid id);
     IEnumerable<TDocument> Find(Expression<Func<TDocument, bool>> filterExpression);
     Task<IEnumerable<TDocument>> FindAsync(Expression<Func<TDocument, bool>> filterExpression);
     TDocument UpdateOne(TDocument document);
     Task<TDocument> UpdateOneAsync(TDocument document);
-    bool DeleteById(ObjectId id);
-    Task<bool> DeleteByIdAsync(ObjectId id);
+    bool DeleteById(Guid id);
+    Task<bool> DeleteByIdAsync(Guid id);
 }

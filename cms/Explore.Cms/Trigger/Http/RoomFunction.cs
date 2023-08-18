@@ -37,23 +37,23 @@ public class RoomFunction
     [FunctionName("GetRoom")]
     [OpenApiOperation("GetRoom", "Rooms", Summary = "Get one room", Description = "Get one room")]
     [OpenApiParameter("id", Description = "Id of the room", In = ParameterLocation.Path, Required = true,
-        Type = typeof(ObjectId))]
+        Type = typeof(Guid))]
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Room), Summary = "Ok response",
         Description = "This returns the response", Example = typeof(RoomResponseExample))]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Summary = "Bad request response",
-        Description = "Bad request response when the id is not a valid ObjectId")]
+        Description = "Bad request response when the id is not a valid Guid")]
     [OpenApiResponseWithoutBody(HttpStatusCode.NotFound, Summary = "The not found response",
         Description = "The response when the room is not found")]
     public async Task<IActionResult> GetRoom(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "rooms/{id}")]
         HttpRequest req, string id)
     {
-        var parseResult = ObjectId.TryParse(id, out var objectId);
+        var parseResult = Guid.TryParse(id, out var guid);
         if (!parseResult) return new BadRequestObjectResult("Invalid id");
         
-        var room = await _roomService.GetRoom(objectId);
+        var room = await _roomService.GetRoom(guid);
 
-        if (room.Id == ObjectId.Empty) return new NotFoundResult();
+        if (room.Id == Guid.Empty) return new NotFoundResult();
         return new OkObjectResult(room);
     }
 
@@ -71,19 +71,19 @@ public class RoomFunction
     [FunctionName("GetRoomTransactions")]
     [OpenApiOperation(nameof(GetRoomTransactions), "Rooms", Summary = "Get all transactions for room", Description = "Get all transactions for specified room")]
     [OpenApiParameter("id", Description = "Id of the room", In = ParameterLocation.Path, Required = true,
-        Type = typeof(ObjectId))]
+        Type = typeof(Guid))]
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(IEnumerable<GuestTransaction>), Summary = "Ok response",
         Description = "The OK response", Example = typeof(List<TransactionResponseExample>))]
     [OpenApiResponseWithBody(HttpStatusCode.BadRequest, "application/json", typeof(string), Summary = "Bad request response",
-        Description = "Bad request response when the id is not a valid ObjectId")]
+        Description = "Bad request response when the id is not a valid Guid")]
     public async Task<IActionResult> GetRoomTransactions(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "rooms/{id}/transactions")]
         HttpRequest req, string id)
     {
-        var parseResult = ObjectId.TryParse(id, out var objectId);
+        var parseResult = Guid.TryParse(id, out var guid);
         if (!parseResult) return new BadRequestObjectResult("Invalid id");
         
-        var transactions = (await _transactionService.FindAsync(t => t.RoomId == objectId)).ToList();
+        var transactions = (await _transactionService.FindAsync(t => t.RoomId == guid)).ToList();
         return new OkObjectResult(transactions);
     }
 

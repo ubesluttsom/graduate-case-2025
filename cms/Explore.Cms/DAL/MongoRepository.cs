@@ -49,14 +49,14 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDoc
         await Collection.FindOneAndDeleteAsync(filterExpression);
     }
 
-    public TDocument FindOneById(ObjectId id)
+    public TDocument FindOneById(Guid id)
     {
         var res = Collection.Find(e => e.Id.Equals(id));
 
         return res.Any() ? res.First() : new TDocument();
     }
 
-    public async Task<TDocument> FindOneByIdAsync(ObjectId id)
+    public async Task<TDocument> FindOneByIdAsync(Guid id)
     {
         var res = (await Collection.FindAsync(e => e.Id.Equals(id))).ToList();
 
@@ -91,12 +91,12 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDoc
                 { IsUpsert = false, ReturnDocument = ReturnDocument.After });
     }
 
-    public bool DeleteById(ObjectId id)
+    public bool DeleteById(Guid id)
     {
         return Collection.FindOneAndDelete(d => d.Id.Equals(id)) != null;
     }
 
-    public async Task<bool> DeleteByIdAsync(ObjectId id)
+    public async Task<bool> DeleteByIdAsync(Guid id)
     {
         var deletedDocument = await Collection.FindOneAndDeleteAsync(d => d.Id.Equals(id));
         return deletedDocument != null;

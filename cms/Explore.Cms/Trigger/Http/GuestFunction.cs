@@ -34,23 +34,23 @@ public class GuestFunction
     [FunctionName("GetGuest")]
     [OpenApiOperation("GetGuest", "Guests", Summary = "Get one guest", Description = "Get one guest")]
     [OpenApiParameter("id", Description = "Id of the guest", In = ParameterLocation.Path, Required = true,
-        Type = typeof(ObjectId))]
+        Type = typeof(Guid))]
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Guest), Summary = "Ok response",
         Description = "This returns the response", Example = typeof(GuestResponseExample))]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Summary = "Bad request response",
-        Description = "Bad request response when the id is not a valid ObjectId")]
+        Description = "Bad request response when the id is not a valid Guid")]
     [OpenApiResponseWithoutBody(HttpStatusCode.NotFound, Summary = "The not found response",
         Description = "The response when the guest is not found")]
     public async Task<IActionResult> GetGuest(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "guests/{id}")]
         HttpRequest req, string id)
     {
-        var tryParse = ObjectId.TryParse(id, out var objectId);
+        var tryParse = Guid.TryParse(id, out var guid);
         if (!tryParse) return new BadRequestObjectResult("Invalid id");
         
-        var guest = await _guestService.FindOneByIdAsync(objectId);
+        var guest = await _guestService.FindOneByIdAsync(guid);
 
-        if (guest.Id == ObjectId.Empty) return new NotFoundResult();
+        if (guest.Id == Guid.Empty) return new NotFoundResult();
         return new OkObjectResult(guest);
     }
 
@@ -85,7 +85,7 @@ public class GuestFunction
 
         var existingGuest = await _guestService.FindOneByIdAsync(guest.Id);
         
-        if (existingGuest.Id == ObjectId.Empty) return new NotFoundResult();
+        if (existingGuest.Id == Guid.Empty) return new NotFoundResult();
         if (guest.RoomId != existingGuest.RoomId) return new BadRequestObjectResult("Cannot change guest room");
 
         try
@@ -117,9 +117,7 @@ public class GuestFunction
         if (!validatedRequest.IsValid) return validatedRequest.ToBadRequest();
 
         var guest = validatedRequest.Value;
-
-        guest.Id = ObjectId.GenerateNewId();
-
+        
         try
         {
             var room = await _roomService.GetNextAvailableRoom();
@@ -136,7 +134,8 @@ public class GuestFunction
         {
             await _guestService.AddOneAsync(guest);
             var createdGuest = await _guestService.FindOneByIdAsync(guest.Id);
-            if (createdGuest.Id == ObjectId.Empty) return new ConflictObjectResult($"Could not create guest {guest.Id}");
+            if (createdGuest.Id == Guid.Empty)
+                return new ConflictObjectResult($"Could not create guest {guest.Id}");
             return new CreatedResult($"guest/{guest.Id}", createdGuest);
         }
         catch (MongoWriteException e)
@@ -144,7 +143,6 @@ public class GuestFunction
             _logger.LogError(e, "Could not create guest");
             return new ConflictObjectResult($"Could not create guest {guest.Id}. Reason: {e.WriteError.Category}");
         }
-
     }
 
     [FunctionName("DeleteGuest")]
@@ -154,17 +152,17 @@ public class GuestFunction
     [OpenApiResponseWithoutBody(HttpStatusCode.OK, Summary = "OK response",
         Description = "The guest was deleted")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Summary = "Bad request response",
-        Description = "Bad request response when the id is not a valid ObjectId")]
+        Description = "Bad request response when the id is not a valid Guid")]
     [OpenApiResponseWithoutBody(HttpStatusCode.NotFound, Summary = "The not found response",
         Description = "The response when the guest is not found")]
     public async Task<IActionResult> DeleteGuest(
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "guests/{id}")]
         HttpRequest req, string id)
     {
-        var parseResult = ObjectId.TryParse(id, out var objectId);
+        var parseResult = Guid.TryParse(id, out var guid);
         if (!parseResult) return new BadRequestObjectResult("Invalid id");
         
-        var guest = await _guestService.FindOneByIdAsync(objectId);
+        var guest = await _guestService.FindOneByIdAsync(guid);
         
         if (!(await _guestService.DeleteByIdAsync(guest.Id)))
             return new NotFoundResult();

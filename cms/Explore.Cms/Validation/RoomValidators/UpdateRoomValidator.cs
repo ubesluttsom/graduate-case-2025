@@ -7,6 +7,6 @@ public class UpdateRoomValidator : RoomValidator
 {
     public UpdateRoomValidator()
     {
-        RuleFor(r => r.Id).NotEqual(ObjectId.Empty).WithMessage("Room must have an id");
+        RuleFor(r => r.Id).NotEqual(Guid.Empty).WithMessage("Room must have an id");
     }
 }

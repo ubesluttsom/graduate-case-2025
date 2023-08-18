@@ -6,7 +6,7 @@ namespace Explore.Cms.Models;
 public class Document : IDocument
 {
     [BsonId]
-    public ObjectId Id { get; set; } = ObjectId.Empty;
-    [BsonElement("createdAt")] public DateTime CreatedAt => Id.CreationTime;
+    public Guid Id { get; set; } = Guid.Empty;
+    [BsonElement("createdAt")] public DateTime CreatedAt => DateTime.Now;
     [BsonElement("updatedAt")] public DateTime UpdatedAt { get; set; } = DateTime.Now;
 }

@@ -8,6 +8,6 @@ public class UpdateTransactionValidator : AbstractValidator<GuestTransaction>
 {
     public UpdateTransactionValidator()
     {
-        RuleFor(t => t.Id).NotEqual(ObjectId.Empty).WithMessage("Transaction must have an id");
+        RuleFor(t => t.Id).NotEqual(Guid.Empty).WithMessage("Transaction must have an id");
     }
 }

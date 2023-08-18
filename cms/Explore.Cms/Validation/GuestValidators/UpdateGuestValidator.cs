@@ -8,6 +8,6 @@ public class UpdateGuestValidator : AbstractValidator<Guest>
 {
     public UpdateGuestValidator()
     {
-        RuleFor(x => x.Id).NotEqual(ObjectId.Empty).WithMessage("Guest must have an id");
+        RuleFor(x => x.Id).NotEqual(Guid.Empty).WithMessage("Guest must have an id");
     }
 }

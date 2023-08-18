@@ -56,7 +56,6 @@ public static class HttpRequestHelpers
     {
         return JsonSerializer.Deserialize<T>(await req.ReadAsStringAsync(), new JsonSerializerOptions()
         {
-            Converters = { new ObjectIdJsonConverter() },
             PropertyNameCaseInsensitive = true
         }) ?? new T();
     }

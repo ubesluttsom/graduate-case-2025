@@ -5,9 +5,8 @@ namespace Explore.Cms.Models;
 
 public interface IDocument
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    ObjectId Id { get; }
+
+    Guid Id { get; set; }
     DateTime CreatedAt { get; }
     DateTime UpdatedAt { set; }
 }
