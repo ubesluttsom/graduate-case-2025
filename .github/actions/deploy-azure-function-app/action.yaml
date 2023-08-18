@@ -8,10 +8,12 @@ inputs:
   app_location:
     required: true
     description: 'The location of the function app'
-  publish_profile:
+  azure_credentials:
+      description: 'The credentials to use to login to Azure'
+      required: true
+  app_artifact_name:
     required: true
-    description: 'The publish profile of the function app'
-
+    description: 'The name of the artifact to download'
 
 runs:
   using: composite  
@@ -24,9 +26,19 @@ runs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.app_artifact_name }}
+          path: ${{ inputs.app_location }}
+      
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ inputs.azure_credentials }}
+          
       - name: Build and Deploy function app
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ inputs.app_name }}
           package: '${{ inputs.app_location }}'
-          publish-profile: ${{ inputs.publish_profile }}

@@ -26,6 +26,10 @@ inputs:
   azure_credentials:
     description: 'The credentials to use to login to Azure'
     required: true
+  deployment_name:
+    description: 'The name of the deployment'
+    required: true
+    default: 'infrastructure'
 
 
 outputs:
@@ -58,3 +62,4 @@ runs:
         failOnStdErr: true
         scope: "resourcegroup"
         deploymentMode: ${{ inputs.deploy == 'true' && 'Incremental' || 'Validate' }}
+        additionalArguments: "--name ${{ inputs.deployment_name }}"

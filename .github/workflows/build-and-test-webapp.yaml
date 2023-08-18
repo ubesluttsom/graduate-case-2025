@@ -20,10 +20,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build web app
-        uses: ./.github/actions/build-web-app
-        with:
-          web_app_location: ${{ env.WEB_APP_LOCATION }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        shell: bash
+        working-directory: ${{ env.WEB_APP_LOCATION }}
+        run: |
+          npm ci
+
+      - name: Build project
+        shell: bash
+        working-directory: ${{ env.WEB_APP_LOCATION }}
+        run: |
+          npm run build
+        
 
   test:
     needs: build

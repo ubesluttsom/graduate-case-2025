@@ -11,7 +11,7 @@ inputs:
   output_location:
     required: true
     description: 'The location to output the dotnet app'
-    
+
 runs:
   using: composite  
   steps:

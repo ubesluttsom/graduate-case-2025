@@ -38,15 +38,10 @@ jobs:
         - name: Checkout repo
           uses: actions/checkout@v3
 
-        - name: Download build artifacts
-          uses: actions/download-artifact@v3
-          with:
-            name: ${{ env.DOTNET_APP_NAME }}
-            path: ${{ env.OUTPUT_LOCATION }}
-
         - name: Deploy function app
           uses: ./.github/actions/deploy-azure-function-app
           with:
               app_location: ${{ env.OUTPUT_LOCATION }}
-              app_name: ${{ env.DOTNET_APP_NAME }}
-              publish_profile: ${{ secrets.PROJECT_API_PUBLISH_PROFILE }}
+              app_artifact_name: ${{ env.DOTNET_APP_NAME }}
+              app_name: ${{ vars.API_FUNCTION_APP_NAME }}
+              azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
