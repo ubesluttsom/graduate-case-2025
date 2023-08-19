@@ -14,17 +14,25 @@ env:
 
 jobs:
   build:
-    name: Build web app
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Build web app
-        uses: ./.github/actions/build-web-app
-        with:
-          web_app_location: ${{ env.WEB_APP_LOCATION }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        shell: bash
+        working-directory: ${{ env.WEB_APP_LOCATION }}
+        run: |
+          npm ci
+
+      - name: Build project
+        shell: bash
+        working-directory: ${{ env.WEB_APP_LOCATION }}
+        run: |
+          npm run build
 
   deploy-dev:
     needs: [build]
@@ -44,6 +52,7 @@ jobs:
           uses: Azure/static-web-apps-deploy@v1
           env:
             VITE_AUTH_CLIENT_ID: ${{ secrets.VITE_AUTH_CLIENT_ID }}
+            VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
           with:
             azure_static_web_apps_api_token: ${{ secrets.WEBAPP_DEPLOYMENT_TOKEN }}
             repo_token: ${{ secrets.github_token }}
