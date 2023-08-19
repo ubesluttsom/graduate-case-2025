@@ -23,7 +23,7 @@ public class Health
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(string), Summary = "The response",
         Description = "This returns the response", Example = typeof(HealthResponseExample))]
     public IActionResult RunAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request");

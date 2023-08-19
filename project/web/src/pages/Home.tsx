@@ -4,18 +4,23 @@ import {
 } from '@azure/msal-react';
 import {
   Box,
+  Button,
   Flex,
   Heading,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import { Guest } from 'cms-types';
 import { useEffect } from 'react';
-import { useGet } from '../hooks/useApi';
+import useAccessToken from '../auth/useAccessToken';
+import { useGet } from '../hooks/useGet';
 import usePost from '../hooks/usePost';
 
 const Home = () => {
   const { accounts } = useMsal();
   const account = useAccount(accounts[0] || {});
+  const accessToken = useAccessToken();
+  
   const {
     data: guest,
     isLoading,
@@ -64,14 +69,51 @@ const Home = () => {
     >
       <Box m="0 auto">
         <Heading as="h1" textAlign="center" fontSize="5xl" mt="100px">
-                  Welcome, { account?.name }!
+          Welcome, {account?.name}!
         </Heading>
         <Text fontSize="xl" textAlign="center" mt="30px">
-          { guest?.id == "" && isLoading ? "Hang on, we are creating a guest account for you..." : "Your room id is " + guest?.roomId }
+          {guest?.id == '' && isLoading
+            ? 'Hang on, we are creating a guest account for you...'
+            : guest?.roomId == '' && isLoading
+            ? 'Hang on, your room is not ready yet...'
+              : 'Your room id is ' + guest?.roomId}
         </Text>
+          <Box>  
+          {accessToken &&
+            CopyToClipboardButton(
+              accessToken,
+              'Copy access token to clipboard'
+            )}
+          </Box>
       </Box>
     </Flex>
   );
 };
+
+const CopyToClipboardButton = (text: string, label?: string) => {
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(text);
+  };
+
+  return (
+    <Tooltip label={label ?? 'Copy to clipboard'}>
+      <Button
+        w="fit-content"
+        p="4"
+        px="4px"
+        colorScheme="blue"
+        borderRadius="10px"
+        m="0 auto"
+        mt="8"
+        fontWeight="bold"
+        color="white"
+        fontSize="l"
+        onClick={copyToClipboard}
+      >
+        📄
+      </Button>
+    </Tooltip>
+  );
+}
 
 export default Home;

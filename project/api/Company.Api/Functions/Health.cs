@@ -26,7 +26,7 @@ public class Health
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(string), Summary = "The response",
         Description = "This returns the response")]
     public async Task<IActionResult> RunAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req)
     {
         var healthResponse = await _cmsService.HealthCheckAsync();
 

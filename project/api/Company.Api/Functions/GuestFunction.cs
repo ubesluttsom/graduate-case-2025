@@ -38,7 +38,7 @@ public class GuestFunction
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Summary = "Bad gateway response",
         Description = "Bad gateway response when the api could not correctly forward the request")]
     public async Task<IActionResult> RunAsync(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = "guests")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "guests")] HttpRequest req)
     {
         try
         {
@@ -69,7 +69,7 @@ public class GuestFunction
         Description = "Bad request response when the request is not valid")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Summary = "Bad gateway response",
         Description = "Bad gateway response when the api could not correctly forward the request")]
-    public async Task<IActionResult> GetGuestByIdAsync([HttpTrigger(AuthorizationLevel.User, "get", Route = "guests/{id}")] HttpRequest req, string id)
+    public async Task<IActionResult> GetGuestByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "guests/{id}")] HttpRequest req, string id)
     {
         try
         {

@@ -8,8 +8,10 @@ export default function useAccessToken() {
   
   useEffect(() => {
     const request = {
-      scopes: ["User.Read"],
-      account: account,
+      scopes: [
+        import.meta.env.VITE_API_SCOPE
+      ],
+      account: account
     };
 
     instance.acquireTokenSilent(request).then((response) => {
