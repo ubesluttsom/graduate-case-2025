@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import useAccessToken from '../auth/useAccessToken';
 
 
-export function useGet<T = unknown>(path: string) {
+export function useGet<T = unknown>(path: string, shouldFetch = true) {
   const accessToken = useAccessToken();
 
   
@@ -11,7 +11,7 @@ export function useGet<T = unknown>(path: string) {
   }).then(res => res.json());
   
   const { data, error, mutate, isLoading } = useSWR<T>(
-    accessToken ? import.meta.env.VITE_API_BASE_URL + path : null,
+    (shouldFetch && accessToken) ? import.meta.env.VITE_API_BASE_URL + path : null,
     fetcher
   );
 

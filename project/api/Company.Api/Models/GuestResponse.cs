@@ -1,5 +1,3 @@
-using System;
-
 namespace Company.Api.Models;
 
 public class GuestResponse : Entity

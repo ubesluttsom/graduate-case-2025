@@ -37,7 +37,7 @@ public class GuestFunction
         Description = "Bad request response when the request is not valid")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Summary = "Bad gateway response",
         Description = "Bad gateway response when the api could not correctly forward the request")]
-    public async Task<IActionResult> RunAsync(
+    public async Task<IActionResult> GetGuestAsync(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "guests")] HttpRequest req)
     {
         try
@@ -73,7 +73,10 @@ public class GuestFunction
     {
         try
         {
-            var response = await _cmsService.GetGuestByIdAsync(Guid.Parse(id));
+            var isParsed = Guid.TryParse(id, out var parsedGuid);
+            if (!isParsed) throw new ValidationException("Id is not a valid guid");
+            
+            var response = await _cmsService.GetGuestByIdAsync(parsedGuid);
             
             return new OkObjectResult(response);
         }

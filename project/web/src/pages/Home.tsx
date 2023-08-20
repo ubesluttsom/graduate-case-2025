@@ -10,7 +10,7 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
-import { Guest } from 'cms-types';
+import { Guest, Room } from 'cms-types';
 import { useEffect } from 'react';
 import useAccessToken from '../auth/useAccessToken';
 import { useGet } from '../hooks/useGet';
@@ -27,6 +27,10 @@ const Home = () => {
     isError,
     mutate,
   } = useGet<Guest>(`/guests/${account?.localAccountId}`);
+
+  const { 
+    data: room,
+  } = useGet<Room>(`/rooms/${guest?.roomId}`, guest?.roomId != undefined)
 
   const post = usePost();
 
@@ -74,9 +78,9 @@ const Home = () => {
         <Text fontSize="xl" textAlign="center" mt="30px">
           {guest && guest.id == ''
             ? 'Hang on, we are creating a guest account for you...'
-            : guest && guest.roomId == ''
+            : room && room.roomNumber == ''
             ? 'Hang on, your room is not ready yet...'
-              : 'Your room id is ' + guest?.roomId}
+              : 'Your room number is ' + room?.roomNumber}
         </Text>
           <Box>  
           {accessToken &&

@@ -7,6 +7,8 @@ export default function useAccessToken() {
   const account = accounts[0];
   
   useEffect(() => {
+    if (!account) return;
+    
     const request = {
       scopes: [
         import.meta.env.VITE_API_SCOPE
@@ -16,13 +18,13 @@ export default function useAccessToken() {
 
     instance.acquireTokenSilent(request).then((response) => {
       setAccessToken(response.accessToken);
-    }).catch((_) => {
-      instance.acquireTokenPopup(request).then((response) => {
-        setAccessToken(response.accessToken);
-      }).catch((e) => {
+    }).catch((e) => {
+      console.warn(e);
+      instance.acquireTokenRedirect(request).catch((e) => { console.warn(e); });
+    }).catch((e) => {
         console.warn(e);
         setAccessToken("");
       });
-    })}, [instance, account]);
+    }, [account, instance ]);
   return accessToken;
 }

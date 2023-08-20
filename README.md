@@ -4,7 +4,7 @@ This repository is created as a basis for the Graduate case 2023. The repository
 
 ## Quick start
 
-Clone the repository with `git clone git@github.com:wixplosives/sample-monorepo.git`.
+Clone the repository with `git clone git@github.com:Itera/graduate-case-base.git`.
 
 ### Web
 

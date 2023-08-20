@@ -44,10 +44,10 @@ Then, start the function app with the following command:
 func host start --csharp
 ```
 
-The function should then be running on [http://localhost:7071](http://localhost:7071). Make sure that the CMS is running as well.
+The function should then be running on [http://localhost:7072](http://localhost:7072). Make sure that the CMS is running as well.
 
 
-You can see if the function started up correctly by navigating to [http://localhost:7071/api/health](http://localhost:7071/api/health). You should see a response like this:
+You can see if the function started up correctly by navigating to [http://localhost:7072/api/health](http://localhost:7072/api/health). You should see a response like this:
 
 ```json
 Up and running!
@@ -55,7 +55,7 @@ Up and running!
 CMS status: Up and running!
 ```
 
-OpenAPI is available at [http://localhost:7071/api/swagger/ui](http://localhost:7071/api/swagger/ui).
+OpenAPI is available at [http://localhost:7072/api/swagger/ui](http://localhost:7072/api/swagger/ui).
 
 
 **_Alternatively_**, you can open the solution in Visual Studio and run the project from there, **_OR_** you can run the project from Visual Studio Code by opening the project in VS Code and attatching the project to the degugger in the debug menu.

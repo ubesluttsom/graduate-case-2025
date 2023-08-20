@@ -34,6 +34,11 @@ public class CmsService : ICmsService
     {
         return await GetAsync<GuestResponse>($"guests/{userId}");
     }
+    
+    public async Task<RoomResponse> GetRoomByIdAsync(Guid roomId)
+    {
+        return await GetAsync<RoomResponse>($"rooms/{roomId}");
+    }
 
     private async Task<T> GetAsync<T>(string url) where T : new()
     {
