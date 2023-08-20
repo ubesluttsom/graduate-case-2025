@@ -69,5 +69,3 @@ module staticWebApp 'staticWebApp.bicep' = if (deploySwa) {
     region: swaRegion
   }
 }
-
-output staticWebAppName string = staticWebApp.outputs.staticWebAppName

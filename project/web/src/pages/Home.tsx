@@ -43,7 +43,7 @@ const Home = () => {
         };
 
         const newGuest = await post('/guests', newGuestData).then((response) => { 
-          if (!response.status) {
+          if (!response.ok) {
             return { id: "", firstName: "", lastName: "" };
           }
           return response.json();
@@ -72,9 +72,9 @@ const Home = () => {
           Welcome, {account?.name}!
         </Heading>
         <Text fontSize="xl" textAlign="center" mt="30px">
-          {guest?.id == '' && isLoading
+          {guest && guest.id == ''
             ? 'Hang on, we are creating a guest account for you...'
-            : guest?.roomId == '' && isLoading
+            : guest && guest.roomId == ''
             ? 'Hang on, your room is not ready yet...'
               : 'Your room id is ' + guest?.roomId}
         </Text>

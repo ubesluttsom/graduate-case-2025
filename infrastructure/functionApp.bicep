@@ -32,7 +32,7 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' existing = 
   name: toLower(cosmosDbName)
 }
 
-resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
+resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
 
   name: toLower(name)
   location: region
@@ -62,6 +62,7 @@ module appSettings 'appsettings.bicep' = {
   name: '${functionApp.name}-appsettings'
   params: {
     appName: functionApp.name
+    currentAppSettings: list(resourceId('Microsoft.Web/sites/config', functionApp.name, 'appsettings'), '2022-09-01').properties
     appSettings: {
       AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
       WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
@@ -71,7 +72,6 @@ module appSettings 'appsettings.bicep' = {
       APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
-    currentAppSettings: functionApp.listApplicationSettings().properties
   }
 }
 
