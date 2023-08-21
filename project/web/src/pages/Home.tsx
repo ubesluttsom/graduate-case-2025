@@ -78,17 +78,21 @@ const Home = () => {
         <Text fontSize="xl" textAlign="center" mt="30px">
           {guest && guest.id == ''
             ? 'Hang on, we are creating a guest account for you...'
+            : !guest
+            ? 'There was a problem retrieving your guest account...'
             : room && room.roomNumber == ''
             ? 'Hang on, your room is not ready yet...'
-              : 'Your room number is ' + room?.roomNumber}
+            : !room
+            ? 'There was a problem retrieving your room...'
+            : 'Your room number is ' + room?.roomNumber}
         </Text>
-          <Box>  
+        <Box>
           {accessToken &&
             CopyToClipboardButton(
               accessToken,
               'Copy access token to clipboard'
             )}
-          </Box>
+        </Box>
       </Box>
     </Flex>
   );
