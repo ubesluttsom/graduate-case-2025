@@ -5,7 +5,6 @@ using Explore.Cms.DAL;
 using Explore.Cms.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Explore.Cms.Services;
@@ -14,7 +13,7 @@ public class GuestService : MongoRepository<Guest>, IGuestService
 {
     private ILogger<GuestService> _logger;
 
-    public GuestService(IOptions<MongoDbOptions> options, ILogger<GuestService> logger) : base(options)
+    public GuestService(IOptions<MongoDbOptions> options, IMongoClient client, ILogger<GuestService> logger) : base(options, client)
     {
         _logger = logger;
 

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Explore.Cms.Configuration;
 using Explore.Cms.Models;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Explore.Cms.DAL;
@@ -15,9 +14,9 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDoc
 {
     protected readonly IMongoCollection<TDocument> Collection;
 
-    protected MongoRepository(IOptions<MongoDbOptions> options)
+    public MongoRepository(IOptions<MongoDbOptions> options, IMongoClient client)
     {
-        var database = new MongoClient(options.Value.ConnectionString).GetDatabase(options.Value.DatabaseName);
+        var database = client.GetDatabase(options.Value.DatabaseName);
         Collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
     }
 

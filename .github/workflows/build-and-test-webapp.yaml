@@ -12,6 +12,7 @@ on:
 
 env:
   WEB_APP_LOCATION: project/web
+  WEB_APP_TEST_LOCATION: project/test
 
 jobs:
   build:
@@ -39,10 +40,32 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
+    environment: dev
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+      
+      - name: Install dependencies
+        shell: bash
+        working-directory: ${{ env.WEB_APP_TEST_LOCATION }}
+        run: |
+          npm ci
+
+      - name: Install Playwright
+        shell: bash
+        working-directory: ${{ env.WEB_APP_TEST_LOCATION }}
+        run: |
+          npx playwright install --with-deps
+
       - name: Run tests
-        working-directory: ${{ env.WEB_APP_LOCATION }}
-        run: echo "Run tests"
+        working-directory: ${{ env.WEB_APP_TEST_LOCATION }}
+        env:
+          BASE_URL: ${{vars.BASE_URL }}
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+          LOGIN_URL: ${{ vars.LOGIN_URL }}
+          LOGIN_USERNAME: ${{ secrets.TEST_LOGIN_USERNAME }}
+          LOGIN_PASSWORD: ${{ secrets.TEST_LOGIN_PASSWORD }}
+        run: npm run test

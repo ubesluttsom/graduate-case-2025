@@ -7,7 +7,7 @@ using Explore.Cms.DAL;
 using Explore.Cms.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Explore.Cms.Services;
 
@@ -15,7 +15,7 @@ public class RoomService : MongoRepository<Room>, IRoomService
 {
     private readonly ILogger<RoomService> _logger;
 
-    public RoomService(IOptions<MongoDbOptions> options, ILogger<RoomService> logger) : base(options)
+    public RoomService(IOptions<MongoDbOptions> options, IMongoClient client, ILogger<RoomService> logger) : base(options, client)
     {
         _logger = logger;
     }

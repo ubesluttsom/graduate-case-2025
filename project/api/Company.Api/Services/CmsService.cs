@@ -55,9 +55,14 @@ public class CmsService : ICmsService
         return await response.Content.ReadAsAsync<T>();
     }
     
-    private async Task<T> PostAsync<T>(string url, object body)
+    private async Task<T> PostAsync<T>(string url, object body) where T : new()
     {
         var response = await _httpClient.PostAsJsonAsync(url, body);
+
+        var statusCode = (int)response.StatusCode;
+        if (statusCode is > 399 and < 500)
+            return new T();
+        
         if (!response.IsSuccessStatusCode)
             throw new CmsException(await response.Content.ReadAsStringAsync());
 

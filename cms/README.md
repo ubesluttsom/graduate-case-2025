@@ -1,4 +1,4 @@
-# Explore CSM
+# Explore CMS
 
 ## Introduction
 

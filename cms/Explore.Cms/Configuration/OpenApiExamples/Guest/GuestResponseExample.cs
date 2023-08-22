@@ -1,6 +1,5 @@
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
-using MongoDB.Bson;
 using Newtonsoft.Json.Serialization;
 
 namespace Explore.Cms.Configuration.OpenApiExamples.Guest;
