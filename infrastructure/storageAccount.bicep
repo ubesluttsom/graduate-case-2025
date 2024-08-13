@@ -10,7 +10,7 @@ param sku string = 'Standard_LRS'
 @description('The name of a container to create in the storage account')
 param containerName string
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: name
   location: region
   sku: {
@@ -20,6 +20,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   properties: {
     supportsHttpsTrafficOnly: true
     defaultToOAuthAuthentication: true
+    publicNetworkAccess: 'Enabled'
+    allowBlobPublicAccess: true
   }
 }
 
@@ -32,7 +34,7 @@ resource defaultContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   name: containerName
   parent: blobService
   properties: {
-    publicAccess: 'None'
+    publicAccess: 'Blob'
     metadata: {}
   }
 }

@@ -22,6 +22,9 @@ on:
     paths:
       - infrastructure/**
 
+permissions:
+  id-token: write
+
 env:
   COMMON_INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/common.bicep
   COMMON_INFRASTRUCTURE_PARAMETER_LOCATION: ./infrastructure/parameters/common.json ./cms/infrastructure/parameters/common.json
@@ -38,9 +41,10 @@ jobs:
         with:
             template_file: ${{ env.COMMON_INFRASTRUCTURE_TEMPLATE_LOCATION }}
             parameter_file: ${{ env.COMMON_INFRASTRUCTURE_PARAMETER_LOCATION }}
-            azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-            resource_group: ${{ secrets.AZURE_RG }}
-            subscription_id: ${{ secrets.AZURE_SUBSCRIPTION }}
+            tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            client_id: ${{ secrets.AZURE_CLIENT_ID }}
             deploy: ${{ (github.event_name == 'push' || github.event.inputs.deploy) && github.ref == 'refs/heads/main' }}
             environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
             deployment_name: common-${{ github.run_id }}
+            resource_group: ${{ secrets.AZURE_RESOURCE_GROUP }}

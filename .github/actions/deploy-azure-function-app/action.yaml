@@ -8,9 +8,15 @@ inputs:
   app_location:
     required: true
     description: 'The location of the function app'
-  azure_credentials:
-      description: 'The credentials to use to login to Azure'
-      required: true
+  client_id:
+    description: 'The client id of the federated user'
+    required: true
+  tenant_id:
+    description: 'The tenant id of the federated user'
+    required: true
+  subscription_id:
+    description: 'The subscription to deploy to'
+    required: true
   app_artifact_name:
     required: true
     description: 'The name of the artifact to download'
@@ -32,10 +38,12 @@ runs:
           name: ${{ inputs.app_artifact_name }}
           path: ${{ inputs.app_location }}
       
-      - name: Login to Azure
-        uses: azure/login@v1
+      - name: Azure CLI Login
+        uses: azure/login@v2
         with:
-          creds: ${{ inputs.azure_credentials }}
+          client-id: ${{ inputs.client_id }}
+          tenant-id: ${{ inputs.tenant_id }}
+          subscription-id: ${{ inputs.subscription_id }}
           
       - name: Build and Deploy function app
         uses: Azure/functions-action@v1

@@ -8,6 +8,9 @@ on:
     paths:
       - 'project/api/**'
 
+permissions:
+  id-token: write
+
 env:
     DOTNET_APP_LOCATION: project/api
     DOTNET_APP_NAME: Company.Api
@@ -44,4 +47,6 @@ jobs:
               app_location: ${{ env.OUTPUT_LOCATION }}
               app_artifact_name: ${{ env.DOTNET_APP_NAME }}
               app_name: ${{ vars.API_FUNCTION_APP_NAME }}
-              azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+              client_id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

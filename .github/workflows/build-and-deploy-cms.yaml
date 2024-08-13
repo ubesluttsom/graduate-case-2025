@@ -8,6 +8,9 @@ on:
     paths:
       - 'cms/**'
 
+permissions:
+  id-token: write
+
 env:
     DOTNET_APP_LOCATION: cms
     DOTNET_APP_NAME: Explore.Cms
@@ -44,4 +47,6 @@ jobs:
               app_location: ${{ env.OUTPUT_LOCATION }}
               app_artifact_name: ${{ env.DOTNET_APP_NAME }}
               app_name: ${{ vars.CMS_FUNCTION_APP_NAME }}
-              azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+              client_id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

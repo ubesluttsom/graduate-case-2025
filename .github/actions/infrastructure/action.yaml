@@ -6,8 +6,8 @@ inputs:
     description: 'Whether to deploy the infrastructure'
     required: true
     default: "false"
-  resource_group:
-    description: 'The resource group to deploy to'
+  tenant_id:
+    description: 'The tenant id of the federated user' 
     required: true
   subscription_id:
     description: 'The subscription to deploy to'
@@ -23,13 +23,16 @@ inputs:
     description: 'The template file to use'
     required: true
     default: 'main.bicep'
-  azure_credentials:
-    description: 'The credentials to use to login to Azure'
+  client_id:
+    description: 'The client id of the federated user'
     required: true
   deployment_name:
     description: 'The name of the deployment'
     required: true
     default: 'infrastructure'
+  resource_group:
+    description: 'The name of the resource group'
+    required: true
 
 
 outputs:
@@ -46,10 +49,12 @@ runs:
   steps:
     - uses: actions/checkout@v3
       
-    - name: Login to Azure
-      uses: azure/login@v1
+    - name: Azure CLI Login
+      uses: azure/login@v2
       with:
-        creds: ${{ inputs.azure_credentials }}
+        client-id: ${{ inputs.client_id }}
+        tenant-id: ${{ inputs.tenant_id }}
+        subscription-id: ${{ inputs.subscription_id }}
             
     - name: Verify or deploy infrastructure
       uses: azure/arm-deploy@v1
