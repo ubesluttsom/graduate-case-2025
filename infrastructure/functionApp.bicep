@@ -32,7 +32,7 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' existing = 
   name: toLower(cosmosDbName)
 }
 
-resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
+resource functionApp 'Microsoft.Web/sites@2023-12-01' = {
 
   name: toLower(name)
   location: region
@@ -53,6 +53,7 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
       ]
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
+      netFrameworkVersion: 'v6.0'
     }
     httpsOnly: true
   }
