@@ -47,7 +47,7 @@ runs:
   using: composite
 
   steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       
     - name: Azure CLI Login
       uses: azure/login@v2
@@ -57,7 +57,7 @@ runs:
         subscription-id: ${{ inputs.subscription_id }}
             
     - name: Verify or deploy infrastructure
-      uses: azure/arm-deploy@v1
+      uses: azure/arm-deploy@v2
       id: infra
       with:
         subscriptionId: ${{ inputs.subscriptionId }}

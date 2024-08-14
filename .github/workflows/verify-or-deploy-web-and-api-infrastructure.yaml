@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment != null && github.event.inputs.environment || 'dev' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: ${{ (github.event_name == 'pull_request' || github.event.inputs.deploy == 'false') && 'Verify' || 'Deploy' }} infrastructure
         uses: ./.github/actions/infrastructure

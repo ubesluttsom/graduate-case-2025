@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build CMS
         uses: ./.github/actions/build-dotnet-app
@@ -39,7 +39,7 @@ jobs:
 
     steps:
         - name: Checkout repo
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
 
         - name: Deploy CMS
           uses: ./.github/actions/deploy-azure-function-app
