@@ -9,7 +9,10 @@
     },
     "logLevel": {
       "default": "Warning",
-      "Function": "Information"
+      "Explore": "Information",
+      "Function": "Information",
+      "Host.Results": "Information",
+      "Host.Aggregator": "Information"
     }
   }
 }
