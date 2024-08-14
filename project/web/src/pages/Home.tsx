@@ -30,7 +30,7 @@ const Home = () => {
 
   const { 
     data: room,
-  } = useGet<Room>(`/rooms/${guest?.roomId}`, guest?.roomId != undefined)
+  } = useGet<Room>(`/rooms/${guest?.roomId}`, guest?.roomId !== undefined && guest?.roomId !== '');
 
   const post = usePost();
 
@@ -38,23 +38,29 @@ const Home = () => {
     if (isLoading) return;
     
     const checkAndCreateGuest = async () => {
-      if (!isLoading && guest?.id == "" && account) {
+      if (
+        !isLoading &&
+        guest?.id === '00000000-0000-0000-0000-000000000000' &&
+        account
+      ) {
         const newGuestData = {
           firstName: account?.name?.split(' ').slice(0, -1).join(' '),
           lastName: account?.name?.split(' ').slice(-1).join(' '),
           id: account?.localAccountId,
-          email: account?.username,
+          email: account?.username
         };
 
-        const newGuest = await post('/guests', newGuestData).then((response) => { 
-          if (!response.ok) {
-            return { id: "", firstName: "", lastName: "" };
-          }
-          return response.json();
-        }).catch((e) => {
-          console.log(e);
-          return { id: "", firstName: "", lastName: "" };
-        });
+        const newGuest = await post('/guests', newGuestData)
+          .then(response => {
+            if (!response.ok) {
+              return { id: '', firstName: '', lastName: '' };
+            }
+            return response.json();
+          })
+          .catch(e => {
+            console.log(e);
+            return { id: '', firstName: '', lastName: '' };
+          });
 
         mutate(newGuest, false);
       }
