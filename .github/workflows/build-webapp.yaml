@@ -6,13 +6,13 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'project/web/**'
+      - 'excursion/web/**'
       - .github/workflows/build-webapp.yaml
       - .github/actions/build-web-app/**
 
 env:
-  WEB_APP_LOCATION: project/web
-  WEB_APP_TEST_LOCATION: project/test
+  WEB_APP_LOCATION: excursion/web
+  WEB_APP_TEST_LOCATION: excursion/test
 
 jobs:
   build:

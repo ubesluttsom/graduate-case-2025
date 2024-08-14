@@ -6,11 +6,11 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'project/api/**'
+      - 'excursion/api/**'
 
 env:
-  DOTNET_APP_LOCATION: project/api
-  DOTNET_APP_NAME: Company.Api
+  DOTNET_APP_LOCATION: excursion/api
+  DOTNET_APP_NAME: Excursion.Api
   OUTPUT_LOCATION: ${{ github.workspace }}/outputs/api
 
 jobs:
