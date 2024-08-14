@@ -36,7 +36,8 @@ runs:
           dotnet publish --configuration Release --property PublishDir=${{ inputs.output_location }}
 
       - name: Upload dotnet app
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: ${{ inputs.app_name }}
             path: ${{ inputs.output_location }}
+            overwrite: true
