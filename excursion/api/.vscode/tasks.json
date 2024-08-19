@@ -12,7 +12,7 @@
 			"type": "process",
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/Company.Api"
+				"cwd": "${workspaceFolder}/Explore.Excursion"
 			}
 		},
 		{
@@ -31,7 +31,7 @@
 			},
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/Company.Api"
+				"cwd": "${workspaceFolder}/Explore.Excursion"
 			}
 		},
 		{
@@ -47,7 +47,7 @@
 			"type": "process",
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/Company.Api"
+				"cwd": "${workspaceFolder}/Explore.Excursion"
 			}
 		},
 		{
@@ -64,14 +64,14 @@
 			"dependsOn": "clean release (functions)",
 			"problemMatcher": "$msCompile",
 			"options": {
-				"cwd": "${workspaceFolder}/Company.Api"
+				"cwd": "${workspaceFolder}/Explore.Excursion"
 			}
 		},
 		{
 			"type": "func",
 			"dependsOn": "build (functions)",
 			"options": {
-				"cwd": "${workspaceFolder}/Company.Api/bin/Debug/net6.0"
+				"cwd": "${workspaceFolder}/Explore.Excursion/bin/Debug/net6.0"
 			},
 			"command": "host start",
 			"isBackground": true,

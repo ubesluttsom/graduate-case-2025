@@ -1,10 +1,10 @@
-# Template repo for Graduate case 2023
+# Graduate case 2024
 
-This repository is created as a basis for the Graduate case 2023. The repository is intended to be forked. 
+This repository is for the graduate case in 2024.
 
 ## Quick start
 
-Clone the repository with `git clone git@github.com:Itera/graduate-case-base.git`.
+Clone the repository with `git clone git@github.com:Itera/graduate-case-2024.git`.
 
 ### Web
 
@@ -13,7 +13,7 @@ Run the following commands from the root of the repository:
 Change directory to web
 
 ```bash
-cd project/web 
+cd excursion/web 
 ```
 
 Install dependencies
@@ -28,27 +28,43 @@ Start the development server
 npm run dev
 ```
 
-### Server
+### Api
 
 Run the following commands from the root of the repository:
 
 Change directory to server
 
 ```bash
-cd project/Api/FunctionApp
+cd exursion/api/Explore.Excursion
 ```
 
 Run server
 
 ```bash
-dotnet run
+func host start --csharp
+```
+
+### CMS
+
+Run the following commands from the root of the repository:
+
+Change directory to server
+
+```bash
+cd cms/Explore.Cms
+```
+
+Run server
+
+```bash
+func host start --csharp
 ```
 
 ## Repository structure
 
 The repository is structured as a monorepo, with a `project` directory containing all the code for the project. The `project` directory contains two subdirectories, `web` and `api`, which contain the code for the web and server projects respectively. The `web` and `api` directories are both structured as standalone projects, with their own `package.json` and `dotnet` files. 
 
-See documentation for the [web](project/web/README.md) and [api](project/api/README.md) projects for detailed information.
+See documentation for the [web](excursion/web/README.md), [api](excursion/api/README.md) and [cms](cms/README.md) projects for detailed information.
 
 ## Infrastructure
 

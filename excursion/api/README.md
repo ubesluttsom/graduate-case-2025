@@ -14,7 +14,7 @@ This project contain the Company API.
 
 ### Configuration
 
-Add a `local.settings.json` file with the following content in the API project's root folder; [./Company.Api](./Company.Api/)
+Add a `local.settings.json` file with the following content in the API project's root folder; [./Explore.Excursion](./Explore.Excursion/)
 
 ```json
 {
@@ -31,12 +31,12 @@ Add a `local.settings.json` file with the following content in the API project's
 }
 ```
 
-See the [./Company.Api/local.settings.example.json](./Company.Api/local.settings.example.json) file for an example.
+See the [./Explore.Excursion/local.settings.example.json](./Explore.Excursion/local.settings.example.json) file for an example.
 
 
 ### Running the project
 
-Navigate to the [./Company.Api](./Company.Api) project. Then, make sure [Azurite](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) is running. See [Microsoft's guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#run-azurite) on how to start Azurite.
+Navigate to the [./Explore.Excursion](./Explore.Excursion) project. Then, make sure [Azurite](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) is running. See [Microsoft's guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#run-azurite) on how to start Azurite.
 
 Then, start the function app with the following command:
 

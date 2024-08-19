@@ -49,7 +49,7 @@ The infrastructure consists of the following resources:
 
 ## Parameters
 
-The infrastructure is parameterized using the [common.json](../infrastructure/parameters/common.json) file. The parameters are:
+The infrastructure is parameterized using the [common.json](../infrastructure/parameters/common.json) file. And the parameter files in [common.json](../cms/infrastructure/parameters/) for the CMS and [common.json](../excursion/infrastructure/parameters/common.json) for the api and web.  The parameters are:
 
 - `environment`: The environment to deploy to. Used to create unique names for resources.
   - Must be one of `dev`, `test`, `prod`.

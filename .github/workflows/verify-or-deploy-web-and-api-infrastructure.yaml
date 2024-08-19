@@ -27,7 +27,7 @@ permissions:
 
 env:
   INFRASTRUCTURE_TEMPLATE_LOCATION: ./infrastructure/project.bicep
-  INFRASTRUCTURE_PARAMETER_LOCATION: ./project/infrastructure/parameters/common.json ./infrastructure/parameters/common.json
+  INFRASTRUCTURE_PARAMETER_LOCATION: ./exursion/infrastructure/parameters/common.json ./infrastructure/parameters/common.json
   
 jobs:
   infrastructure:
