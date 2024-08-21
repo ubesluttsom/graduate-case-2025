@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import useAccessToken from '../auth/useAccessToken';
 import { useGet } from '../hooks/useGet';
 import usePost from '../hooks/usePost';
+import {Link} from "react-router-dom";
 
 const Start = () => {
   const { accounts } = useMsal();
@@ -99,9 +100,10 @@ const Start = () => {
         <Box>
           <Box>
             <Button color={"#FFB46D"} variant="outline">
-              Excursions
+              <Link to="/Excursions">Excursions</Link>
             </Button>
           </Box>
+
           
           <Box>
             <Button color={"#FFB46D"} variant="outline">
