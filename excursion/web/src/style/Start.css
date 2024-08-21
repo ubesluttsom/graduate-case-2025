@@ -1,0 +1,20 @@
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.startButtonBox {
+    width: 50%;
+}
+
+.startButton {
+    color: #FFB46D;
+    width: 80%
+}
+
+.startButtonImage {
+    width: 80%;
+    height: 60%;
+}

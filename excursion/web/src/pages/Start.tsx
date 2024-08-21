@@ -17,6 +17,12 @@ import useAccessToken from '../auth/useAccessToken';
 import { useGet } from '../hooks/useGet';
 import usePost from '../hooks/usePost';
 import {Link} from "react-router-dom";
+import mountain from "../assets/img/mountain.png"
+import startExcursions from "../assets/img/startExcursions.png"
+import startRestaurant from "../assets/img/startRestaurant.png"
+import startShop from "../assets/img/startShop.png"
+import startSpa from "../assets/img/startSpa.png"
+import "../style/Start.css"
 
 const Start = () => {
   const { accounts } = useMsal();
@@ -80,6 +86,7 @@ const Start = () => {
       backgroundColor="#f0f0f0"
     >
       <Box m="0 auto">
+        <img src={mountain}></img>
         <Heading as="h1" textAlign="center" fontSize="5xl" mt="100px">
           Welcome aboard the Explorer , {account?.name}!
         </Heading>
@@ -97,39 +104,38 @@ const Start = () => {
             ? 'There was a problem retrieving your room...'
             : 'Your room number is ' + room?.roomNumber}
         </Text>
-        <Box>
-          <Box>
-            <Button color={"#FFB46D"} variant="outline">
-              <Link to="/Excursions">Excursions</Link>
+        <Box className="buttonContainer">
+          <Box className='startButtonBox'>
+            <Button className="startButton" variant="outline">
+              <Link to="/ExcursionOverview">Excursions</Link>
             </Button>
+            <img className="startButtonImage" src={startExcursions}></img>
           </Box>
 
           
-          <Box>
-            <Button color={"#FFB46D"} variant="outline">
+          <Box className='startButtonBox'>
+            <Button className="startButton" variant="outline">
               Spa
             </Button>
+            <img className="startButtonImage" src={startSpa}></img>
           </Box>
           
-          <Box>
-            <Button color={"#FFB46D"} variant="outline">
+          <Box className='startButtonBox'>
+            <Button className="startButton" variant="outline">
               Restaurants
             </Button>
+            <img className="startButtonImage" src={startRestaurant}></img>
           </Box>
           
-          <Box>
-            <Button color={"#FFB46D"} variant="outline">
+          <Box className='startButtonBox'>
+            <Button className="startButton" variant="outline">
               Shop
             </Button>
+            <img className="startButtonImage" src={startShop}></img>
           </Box>
           
         </Box>
         <Box>
-          {accessToken &&
-            CopyToClipboardButton(
-              accessToken,
-              'Copy access token to clipboard'
-            )}
         </Box>
       </Box>
     </Flex>
