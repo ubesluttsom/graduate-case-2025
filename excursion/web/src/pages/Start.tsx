@@ -83,30 +83,34 @@ const Start = () => {
       height="100vh"
       alignContent="center"
       justifyContent="center"
-      backgroundColor="#f0f0f0"
+      backgroundColor="#091E3B"
     >
-      <Box m="0 auto">
-        <img src={mountain}></img>
-        <Heading as="h1" textAlign="center" fontSize="5xl" mt="100px">
-          Welcome aboard the Explorer , {account?.name}!
-        </Heading>
-        <Text fontSize="xl" textAlign="center" mt="30px">
-          The Green Alternative
-        </Text>
-        <Text fontSize="xl" textAlign="center" mt="30px">
-          {guest && guest.id == ''
-            ? 'Hang on, we are creating a guest account for you...'
-            : !guest
-            ? 'There was a problem retrieving your guest account...'
-            : room && room.roomNumber == ''
-            ? 'Hang on, your room is not ready yet...'
-            : !room
-            ? 'There was a problem retrieving your room...'
-            : 'Your room number is ' + room?.roomNumber}
-        </Text>
+      <Box m="0">
+        <Box backgroundImage={mountain} style={{height:"50%"}}>
+          <Heading as="h1" textAlign="center" fontSize="2xl" mt="100px" color="#FFB46D">
+            Welcome aboard the Explorer, {account?.name}!
+          </Heading>
+          <Text fontSize="xl" textAlign="center" mt="30px">
+            The Green Alternative
+          </Text>
+          <Text fontSize="xl" textAlign="center" mt="30px">
+            {guest && guest.id == ''
+              ? 'Hang on, we are creating a guest account for you...'
+              : !guest
+              ? 'There was a problem retrieving your guest account...'
+              : room && room.roomNumber == ''
+              ? 'Hang on, your room is not ready yet...'
+              : !room
+              ? 'There was a problem retrieving your room...'
+              : 'Your room number is ' + room?.roomNumber}
+          </Text>
+        </Box>
+
+
+
         <Box className="buttonContainer">
           <Box className='startButtonBox'>
-            <Button className="startButton" variant="outline">
+            <Button className="startButton" variant="outline" style={{fontSize:"30px"}}>
               <Link to="/ExcursionOverview">Excursions</Link>
             </Button>
             <img className="startButtonImage" src={startExcursions}></img>
@@ -114,28 +118,39 @@ const Start = () => {
 
           
           <Box className='startButtonBox'>
-            <Button className="startButton" variant="outline">
+            <Button className="startButton" variant="outline" style={{fontSize:"30px"}}>
               Spa
             </Button>
             <img className="startButtonImage" src={startSpa}></img>
           </Box>
           
           <Box className='startButtonBox'>
-            <Button className="startButton" variant="outline">
+            <Button className="startButton" variant="outline" style={{fontSize:"30px"}}>
               Restaurants
             </Button>
             <img className="startButtonImage" src={startRestaurant}></img>
           </Box>
           
           <Box className='startButtonBox'>
-            <Button className="startButton" variant="outline">
+            <Button className="startButton" variant="outline" style={{fontSize:"30px"}}>
               Shop
             </Button>
             <img className="startButtonImage" src={startShop}></img>
           </Box>
           
         </Box>
-        <Box>
+        <Box className="buttonContainer">
+        <Box className='startButtonBox'>
+            <Button className="startBottomButton" variant="outline" style={{fontSize:"18px", backgroundColor: "#FFB46D"}}>
+              Restaurants
+            </Button>
+          </Box>
+          
+          <Box className='startButtonBox'>
+            <Button className="startBottomButton" variant="outline" style={{fontSize:"18px", backgroundColor: "#FFB46D", padding:"0px, 24px, 0px, 24px"}}>
+              Shop
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Flex>

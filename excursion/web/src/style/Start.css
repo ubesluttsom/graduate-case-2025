@@ -7,14 +7,24 @@
 
 .startButtonBox {
     width: 50%;
+    text-align: center;
 }
 
 .startButton {
     color: #FFB46D;
-    width: 80%
+    width: 80%;
+    font-size: 30px;
+}
+
+.startBottomButton {
+    background-color: #FFB46D;
+    width: 80%;
+    font-size: 30px;
 }
 
 .startButtonImage {
     width: 80%;
     height: 60%;
+    margin-left: auto;
+    margin-right: auto;
 }
