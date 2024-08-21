@@ -15,6 +15,8 @@ import { useEffect } from 'react';
 import useAccessToken from '../auth/useAccessToken';
 import { useGet } from '../hooks/useGet';
 import usePost from '../hooks/usePost';
+import {Link} from "react-router-dom";
+
 
 const Home = () => {
   const { accounts } = useMsal();
@@ -77,6 +79,7 @@ const Home = () => {
       justifyContent="center"
       backgroundColor="#f0f0f0"
     >
+      <Link to="/ExcursionOverview"> Dashboard </Link>
       <Box m="0 auto">
         <Heading as="h1" textAlign="center" fontSize="5xl" mt="100px">
           Welcome, {account?.name}!
