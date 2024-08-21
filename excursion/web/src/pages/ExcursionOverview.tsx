@@ -1,9 +1,9 @@
-import React from 'react';
+import headerExcursion from "../assets/img/headerExcursion.png"
 
 
 function ExcursionOverview() {
-    // Import result is the URL of your image
-    return <img src={"../assets/img/headerExcursion.png"} alt="Logo" />;
+    return <
+        img src={headerExcursion} alt="Test bilde2" />;
   }
   
   export default ExcursionOverview;
