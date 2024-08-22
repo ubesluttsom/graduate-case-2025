@@ -15,6 +15,7 @@ function ExcursionOverview() {
     const navigate = useNavigate();
 
     const handleClick = () => {
+        excursionID = 0;
         navigate('/whaleSafari');
     };
 
