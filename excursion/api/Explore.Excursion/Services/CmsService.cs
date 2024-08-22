@@ -89,21 +89,21 @@ public class CmsService : ICmsService
     {
         var excursion = new ExcursionActivity
         {
-            Id = 1,
-            Name = "Whale safari",
-            Description = "Dette er en testaktivtet"
+            Id = 0,
+            Name = "WHALE SAFARI",
+            Description = "See the great whales of the artic up close along our Whale Safari."
         };
         var excursion1 = new ExcursionActivity
         {
-            Id = 2,
-            Name = "Dog sled",
-            Description = "Dette er en testaktivtet"
+            Id = 1,
+            Name = "DOG SLED",
+            Description = "Experience dog sledding at Svalbard with our amazing guides!"
         };
         var excursion3 = new ExcursionActivity
         {
-            Id = 3,
-            Name = "Rib",
-            Description = "Dette er en testaktivtet"
+            Id = 2,
+            Name = "RIB TRIP",
+            Description = "Experience the artic up close in this high speed adventure."
         };
         var excursions = new[] { excursion, excursion1, excursion3 };
 

@@ -3,6 +3,7 @@ import rib from "../assets/img/rib.png";
 import orca from "../assets/img/whale.png";
 import excursion from "../assets/dummyData/excursion.json"
 import { excursionID } from "./ExcursionOverview"
+import { useState, useEffect } from 'react';
 
 const ButtonDayStyling = {
     backgroundColor: '#091E3B',
@@ -71,8 +72,35 @@ const WhaleSafari = () => {
         image = rib
     }
 
-    const title = excursion.excursions[excursionID].title
-    const description = excursion.excursions[excursionID].description
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchDataForPosts = async () => {
+          try {
+            const response = await fetch(
+              `http://localhost:7072/api/excursions`
+            );
+            if (!response.ok) {
+              throw new Error(`HTTP error: Status ${response.status}`);
+            }
+            let postsData = await response.json();
+            setData(postsData);
+            setError(null);
+          } catch (err) {
+            setData(null);
+          } finally {
+            setLoading(false);
+          }
+        };
+        fetchDataForPosts();
+      }, []);
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    const title = data[excursionID].Name
+    const description = data[excursionID].Description
     
     return (
       <div style={{backgroundColor: '#091E3B', height: '932px'}}>
