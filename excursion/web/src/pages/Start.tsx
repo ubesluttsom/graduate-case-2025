@@ -85,10 +85,10 @@ const Start = () => {
       justifyContent="center"
       backgroundColor="#091E3B"
     >
-      <Box m="0" padding="0" className='test' height="100%">
-        <div style={{height:"50%", backgroundImage:`url(${mountain})`, backgroundSize: "100% 100%"}} className='startHeader'>
+      <Box m="0" padding="0" className='test' height="100%" fontFamily="Roboto Monoto">
+        <div style={{height:"50%", backgroundImage:`url(${mountain})`, backgroundSize: "110% 100%"}} className='startHeader'>
           <Box className='startFiller'></Box>
-          <Heading as="h1" textAlign="center" fontSize="3xl" mt="100px" color="#FFB46D">
+          <Heading as="h1" textAlign="center" fontSize="3xl" mt="100px" color="#FFB46D" fontFamily="Roboto Monoto">
             Welcome aboard the Explorer, {account?.name}!
           </Heading>
           <Text fontSize="xl" textAlign="center" mt="30px" color="white" mb="30px">

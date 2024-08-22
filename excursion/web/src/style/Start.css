@@ -4,9 +4,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 20px;
+    font-family: "Roboto Mono";
 }
-
-
 
 .startFiller {
     height: 45%;
