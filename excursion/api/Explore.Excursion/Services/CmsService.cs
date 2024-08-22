@@ -81,8 +81,33 @@ public class CmsService : ICmsService
             Description = "Dette er en testaktivtet"
         };
 
-        return JsonConvert.SerializeObject(excursion); ;
+        return JsonConvert.SerializeObject(excursion); 
 
+    }
+
+    public async Task<String> GetExcursionActivities()
+    {
+        var excursion = new ExcursionActivity
+        {
+            Id = 1,
+            Name = "Whale safari",
+            Description = "Dette er en testaktivtet"
+        };
+        var excursion1 = new ExcursionActivity
+        {
+            Id = 2,
+            Name = "Dog sled",
+            Description = "Dette er en testaktivtet"
+        };
+        var excursion3 = new ExcursionActivity
+        {
+            Id = 3,
+            Name = "Rib",
+            Description = "Dette er en testaktivtet"
+        };
+        var excursions = new[] { excursion, excursion1, excursion3 };
+
+        return JsonConvert.SerializeObject(excursions);
     }
 
 }
