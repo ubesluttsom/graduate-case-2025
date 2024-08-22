@@ -1,4 +1,6 @@
-import orca from "../assets/img/Orca.png"
+import dogsled from "../assets/img/dogsled.png";
+import rib from "../assets/img/rib.png";
+import orca from "../assets/img/whale.png";
 import excursion from "../assets/dummyData/excursion.json"
 import { excursionID } from "./ExcursionOverview"
 
@@ -59,12 +61,22 @@ const DivSingleStyling = {
 }
 
 const WhaleSafari = () => {
+
+    let image = orca
+    if (excursionID == 0) {
+        image = orca
+    } else if (excursionID == 1) {
+        image = dogsled
+    } else if (excursionID == 2) {
+        image = rib
+    }
+
     const title = excursion.excursions[excursionID].title
     const description = excursion.excursions[excursionID].description
     
     return (
       <div style={{backgroundColor: '#091E3B', height: '932px'}}>
-        <img src={orca} />
+        <img src={image} />
         <h1 style={{textAlign: 'center', color: '#FFB46D', fontSize: '36px', font:'Roboto Mono'}}>{title}</h1>
         <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><i>{description}</i><br/><br/></p>
         <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><b>Choose your preferred day for a Whale Safari Excursion: </b></p>
