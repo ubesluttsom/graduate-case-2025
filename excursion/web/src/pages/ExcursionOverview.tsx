@@ -14,8 +14,8 @@ let excursionID = 0;
 function ExcursionOverview() {
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        excursionID = 0;
+    const updateExcursionID = (id: number) => {
+        excursionID = id;
         navigate('/whaleSafari');
     };
 
@@ -32,7 +32,7 @@ function ExcursionOverview() {
             </div>
             <div>
                 <Carousel>
-                    <Carousel.Item interval={10000} onClick={handleClick}>
+                    <Carousel.Item interval={10000} onClick={() => updateExcursionID(0)}>
                         <img
                             className="d-block w-100"
                             src={whale}
@@ -42,7 +42,7 @@ function ExcursionOverview() {
                             <h3>Whale Safari</h3>
                         </Carousel.Caption>
                     </Carousel.Item>
-                    <Carousel.Item interval={10000}>
+                    <Carousel.Item interval={10000} onClick={() => updateExcursionID(1)}>
                         <img
                             className="d-block w-100"
                             src={dogsled}
@@ -52,7 +52,7 @@ function ExcursionOverview() {
                             <h3>Dog Sled</h3>
                         </Carousel.Caption>
                     </Carousel.Item>
-                    <Carousel.Item interval={10000}>
+                    <Carousel.Item interval={10000} onClick={() => updateExcursionID(2)}>
                         <img
                             className="d-block w-100"
                             src={rib}
