@@ -3,6 +3,13 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+
+
+.startFiller {
+    height: 45%;
 }
 
 .startButtonBox {
@@ -20,6 +27,8 @@
     background-color: #FFB46D;
     width: 80%;
     font-size: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .startButtonImage {

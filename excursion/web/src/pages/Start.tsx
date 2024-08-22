@@ -81,16 +81,17 @@ const Start = () => {
     <Flex
       width="100vw"
       height="100vh"
-      alignContent="center"
+      alignItems="flex-start"
       justifyContent="center"
       backgroundColor="#091E3B"
     >
-      <Box m="0">
-        <Box backgroundImage={mountain} style={{height:"50%"}}>
-          <Heading as="h1" textAlign="center" fontSize="2xl" mt="100px" color="#FFB46D">
+      <Box m="0" padding="0" className='test' height="100%">
+        <div style={{height:"50%", backgroundImage:`url(${mountain})`, backgroundSize: "100% 100%"}} className='startHeader'>
+          <Box className='startFiller'></Box>
+          <Heading as="h1" textAlign="center" fontSize="3xl" mt="100px" color="#FFB46D">
             Welcome aboard the Explorer, {account?.name}!
           </Heading>
-          <Text fontSize="xl" textAlign="center" mt="30px">
+          <Text fontSize="xl" textAlign="center" mt="30px" color="white" mb="30px">
             The Green Alternative
           </Text>
           <Text fontSize="xl" textAlign="center" mt="30px">
@@ -104,7 +105,7 @@ const Start = () => {
               ? 'There was a problem retrieving your room...'
               : 'Your room number is ' + room?.roomNumber}
           </Text>
-        </Box>
+        </div>
 
 
 
