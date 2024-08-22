@@ -3,12 +3,21 @@ import dogsled from "../assets/img/dogsled.png";
 import rib from "../assets/img/rib.png";
 import whale from "../assets/img/whale.png";
 import Carousel from 'react-bootstrap/Carousel';
+import { useNavigate } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import '../style/ExcursionOverview.css'; 
 
+
+
 function ExcursionOverview() {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/');
+    };
+
     return (
         <div className="main">
             <img src={headerExcursion} alt="Test bilde2" />
@@ -22,7 +31,7 @@ function ExcursionOverview() {
             </div>
             <div>
                 <Carousel>
-                    <Carousel.Item interval={10000}>
+                    <Carousel.Item interval={10000} onClick={handleClick}>
                         <img
                             className="d-block w-100"
                             src={whale}
@@ -56,6 +65,6 @@ function ExcursionOverview() {
             </div>
         </div>
     );
-}
+};
 
 export default ExcursionOverview;

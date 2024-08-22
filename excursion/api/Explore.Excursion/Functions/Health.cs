@@ -12,12 +12,12 @@ namespace Explore.Excursion.Functions;
 public class Health
 {
     private readonly ICmsService _cmsService;
-    
+
     public Health(ICmsService cmsService)
     {
         _cmsService = cmsService;
     }
-    
+
     [FunctionName("Health")]
     [OpenApiOperation("Health",
         "Health",
@@ -32,7 +32,7 @@ public class Health
 
         var response = "Up and running!\n\n" +
                        $"CMS status: {healthResponse}";
-        
+
         return new OkObjectResult(response);
     }
 }
