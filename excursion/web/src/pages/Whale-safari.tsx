@@ -1,4 +1,5 @@
 import orca from "../assets/img/Orca.png"
+import {Link} from "react-router-dom";
 
 const ButtonDayStyling = {
     backgroundColor: '#091E3B',
@@ -69,7 +70,7 @@ const WhaleSafari = () => {
         <div style={DivDayStyling}><button style={ButtonDayStyling}>Monday</button><button style={ButtonDayStyling}>Tuesday</button><button style={ButtonDayStyling}>Wednesday</button></div>
         <div style={DivDayStyling}><button style={ButtonDayStyling}>Thursday</button><button style={ButtonDayStyling}>Friday</button><button style={ButtonDayStyling}>Saturday</button></div>
         <div style={DivDoubleStyling}><button style={ButtonStyling}>Info</button><button style={ButtonStyling}>Package list</button></div>
-        <div style={DivSingleStyling}><button style={SingleButtonStyling}>Back to Front Page</button></div>
+        <div style={DivSingleStyling}><button style={SingleButtonStyling}><Link to="/">Back to Front Page</Link></button></div>
       </div>
     );
   };
