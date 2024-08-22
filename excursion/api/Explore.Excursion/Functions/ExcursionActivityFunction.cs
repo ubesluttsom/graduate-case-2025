@@ -40,6 +40,18 @@ public class ExcursionActivityFunction
 
     }
 
+    [FunctionName("GetExcursions")]
+    [OpenApiOperation("GetExcursions", "GetExcursions", Summary = "Get all excursion")]
+    public async Task<IActionResult> GetAllExcursions(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "excursions")] HttpRequest req)
+    {
+
+
+        var response = await _cmsService.GetExcursionActivities();
+        return new OkObjectResult(response);
+
+    }
+
 
 
 }

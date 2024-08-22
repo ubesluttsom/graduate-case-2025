@@ -13,4 +13,6 @@ public interface ICmsService
     Task<RoomResponse> GetRoomByIdAsync(Guid userId);
 
     Task<string> GetExcursionActivity();
+
+    Task<string> GetExcursionActivities();
 }
