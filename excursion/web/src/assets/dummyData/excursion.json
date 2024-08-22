@@ -1,3 +1,20 @@
 {
-    "title": "WHALE SAFARI"
+    "excursions": [
+        {
+        "excursionID": 0,
+        "title": "WHALE SAFARI",
+        "description": "See the great whales of the artic up close along our Whale Safari.",
+        "imageURL": "../assets/img/Orca.png"
+        },
+        {
+        "excursionID": 1,
+        "title": "DOG SLED",
+        "description": "Experience dog sledding at Svalbard with our amazing guides!"
+        },
+        {
+        "excursionID": 1,
+        "title": "RIB TRIP",
+        "description": "Experience the artic up close in this high speed adventure."
+        }
+    ]
 }

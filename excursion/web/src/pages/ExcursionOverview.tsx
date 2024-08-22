@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import '../style/ExcursionOverview.css'; 
 
-
+let excursionID = 0;
 
 function ExcursionOverview() {
     const navigate = useNavigate();
@@ -67,4 +67,6 @@ function ExcursionOverview() {
     );
 };
 
+
+export { excursionID };
 export default ExcursionOverview;

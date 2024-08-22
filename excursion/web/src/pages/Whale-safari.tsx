@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import orca from "../assets/img/Orca.png"
 import excursion from "../assets/dummyData/excursion.json"
+import { excursionID } from "./ExcursionOverview"
 
 const ButtonDayStyling = {
     backgroundColor: '#091E3B',
@@ -59,13 +59,14 @@ const DivSingleStyling = {
 }
 
 const WhaleSafari = () => {
-    const title = excursion.title
+    const title = excursion.excursions[excursionID].title
+    const description = excursion.excursions[excursionID].description
     
     return (
       <div style={{backgroundColor: '#091E3B', height: '932px'}}>
         <img src={orca} />
         <h1 style={{textAlign: 'center', color: '#FFB46D', fontSize: '36px', font:'Roboto Mono'}}>{title}</h1>
-        <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><i>See the great whales of the artic up close along our Whale Safari.</i><br/><br/></p>
+        <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><i>{description}</i><br/><br/></p>
         <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><b>Choose your preferred day for a Whale Safari Excursion: </b></p>
 
         <div style={DivDayStyling}><button style={ButtonDayStyling}>Monday</button><button style={ButtonDayStyling}>Tuesday</button><button style={ButtonDayStyling}>Wednesday</button></div>
