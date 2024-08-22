@@ -108,7 +108,7 @@ const WhaleSafari = () => {
         <img src={image} />
         <h1 style={{textAlign: 'center', color: '#FFB46D', fontSize: '36px', font:'Roboto Mono'}}>{title}</h1>
         <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><i>{description}</i><br/><br/></p>
-        <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><b>Choose your preferred day for a Whale Safari Excursion: </b></p>
+        <p style={{textAlign: 'center', color: 'white', fontSize: '18px'}}><b>Choose your preferred day for a {title.toLowerCase()} Excursion: </b></p>
 
         <div style={DivDayStyling}><button style={ButtonDayStyling}>Monday</button><button style={ButtonDayStyling}>Tuesday</button><button style={ButtonDayStyling}>Wednesday</button></div>
         <div style={DivDayStyling}><button style={ButtonDayStyling}>Thursday</button><button style={ButtonDayStyling}>Friday</button><button style={ButtonDayStyling}>Saturday</button></div>
