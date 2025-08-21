@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Explore.Cms.Configuration;
 using FluentValidation.AspNetCore;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -21,5 +22,18 @@ internal class Startup : FunctionsStartup
             .Configure<MongoDbOptions>(cosmosDbOptions)
             .AddFluentValidationAutoValidation()
             .AddExploreServices();
+
+        // Seed database for development
+        if (config.GetValue<bool>("SeedDatabase", true))
+        {
+            if (cosmosDbOptions["ConnectionString"] == null || cosmosDbOptions["DatabaseName"] == null)
+            {
+                throw new System.Exception("CosmosDB connection string or database name is not configured.");
+            }
+            _ = Task.Run(async () => await SimpleSeed.SeedDatabase(
+                        cosmosDbOptions["ConnectionString"]!,
+                        cosmosDbOptions["DatabaseName"]!
+                        ));
+        }
     }
 }
