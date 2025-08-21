@@ -11,7 +11,7 @@ public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     public override OpenApiInfo Info { get; set; } = new()
     {
         Title = "Explore Cruise Management System (CMS)",
-        Version = "1.0.0",
+        Version = "1.1.0",
         Description = "This is the documentation for the CMS API",
     };
 }
