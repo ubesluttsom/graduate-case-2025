@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link as RouterLink } from "react-router-dom";
+import { useParams, Link as RouterLink, useSearchParams } from "react-router-dom";
 import {
     Box,
     Heading,
@@ -7,7 +7,14 @@ import {
     Spinner,
     Button,
     HStack,
-    Link
+    Link,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter
 } from "@chakra-ui/react";
 
 type Event = {
@@ -23,9 +30,14 @@ type Event = {
 
 export default function EventDetails() {
     const { id } = useParams<{ id: string }>();
+    const [searchParams] = useSearchParams();
+    const guestId = searchParams.get("guestId"); // 👈 get guestId from URL
+
     const [event, setEvent] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
     const [adults, setAdults] = useState(0);
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
         async function fetchEvents() {
@@ -55,7 +67,7 @@ export default function EventDetails() {
         return (
             <Box p="2rem">
                 <Heading size="md">Event not found</Heading>
-                <Link as={RouterLink} to="/explore" color="blue.500">
+                <Link as={RouterLink} to={`/explore${guestId ? `?guestId=${guestId}` : ""}`} color="blue.500">
                     Back to Explore
                 </Link>
             </Box>
@@ -87,16 +99,46 @@ export default function EventDetails() {
             <Button
                 colorScheme="blue"
                 isDisabled={adults === 0}
-                onClick={() => alert(`Reserved ${adults} spots for ${event.name}`)}
+                onClick={onOpen}
             >
                 Reserve
             </Button>
 
             <Box mt={4}>
-                <Link as={RouterLink} to="/explore" color="blue.500">
+                {/* 👇 preserve guestId when going back */}
+                <Link as={RouterLink} to={`/explore${guestId ? `?guestId=${guestId}` : ""}`} color="blue.500">
                     ← Back to Explore
                 </Link>
             </Box>
+
+            {/* Reservation Modal */}
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                <ModalOverlay />
+                <ModalContent mx={4}>
+                    <ModalHeader>Confirm Reservation</ModalHeader>
+                    <ModalBody>
+                        <Text mb={2}><strong>Activity:</strong> {event.name}</Text>
+                        <Text><strong>People:</strong> {adults}</Text>
+                        {guestId && <Text><strong>GuestId:</strong> {guestId}</Text>}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            colorScheme="blue"
+                            mr={3}
+                            onClick={() => {
+                                // TODO: send reservation with guestId
+                                console.log(`Reserved ${adults} spots for ${event.name} by guest ${guestId}`);
+                                onClose();
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button variant="ghost" onClick={onClose}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Box>
     );
 }

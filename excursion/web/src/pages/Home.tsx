@@ -1,40 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Home.css"; // import your CSS file
 
 export default function Home() {
-    const [userName, setUserName] = useState("");
+    const [guests, setGuests] = useState<any[]>([]);
+    const [selectedGuestId, setSelectedGuestId] = useState("");
     const navigate = useNavigate();
 
-    function handleSubmit(e: React.FormEvent) {
+    useEffect(() => {
+        fetch("http://localhost:7071/api/guests")
+            .then((res) => res.json())
+            .then(setGuests)
+            .catch((err) => console.error("Failed to load guests", err));
+    }, []);
+
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!userName.trim()) return;
-        navigate("/explore", { state: { name: userName } });
-    }
+        if (!selectedGuestId) return;
+        // Navigate to explore, passing guestId in URL
+        navigate(`/explore?guestId=${selectedGuestId}`);
+    };
 
     return (
-        <div className="home">
-            {/* Heading over background */}
-            <h1 className="hero-title">Hello, what’s your name?</h1>
-
-            {/* Form panel at the bottom */}
-            <div className="form-panel">
-                <form className="form" onSubmit={handleSubmit}>
-                    <label htmlFor="fname">Your name</label>
-                    <input
-                        id="fname"
-                        type="text"
-                        className="text-input"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        placeholder="Enter your name"
-                    />
-                    <div className="spacer" />
-                    <button type="submit" className="submit-btn">
-                        Go
-                    </button>
-                </form>
-            </div>
+        <div style={{ padding: "2rem" }}>
+            <h1>Select a guest</h1>
+            <form onSubmit={handleSubmit}>
+                <select
+                    value={selectedGuestId}
+                    onChange={(e) => setSelectedGuestId(e.target.value)}
+                >
+                    <option value="">-- choose guest --</option>
+                    {guests.map((g) => (
+                        <option key={g.id} value={g.id}>
+                            {g.firstName} {g.lastName}
+                        </option>
+                    ))}
+                </select>
+                <button type="submit">Go</button>
+            </form>
         </div>
     );
 }

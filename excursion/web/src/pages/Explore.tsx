@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link as RouterLink } from "react-router-dom";
+import { useLocation, Link as RouterLink, useSearchParams } from "react-router-dom";
 import { Box, Heading, Text, Stack, Spinner, Link } from "@chakra-ui/react";
 
 type Event = {
@@ -13,18 +13,40 @@ type Event = {
     updatedAt: string;
 };
 
+type Guest = {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+};
+
 export default function Explore() {
     const location = useLocation();
     const state = location.state as { name?: string } | null;
-    const userName = state?.name ?? "";
+    const fallbackName = state?.name ?? "";
 
+    const [searchParams] = useSearchParams();
+    const guestId = searchParams.get("guestId");
+
+    const [guest, setGuest] = useState<Guest | null>(null);
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
 
+    // Fetch guest if guestId exists
+    useEffect(() => {
+        if (guestId) {
+            fetch(`http://localhost:7071/api/guests/${guestId}`)
+                .then((res) => res.json())
+                .then(setGuest)
+                .catch((err) => console.error("Failed to fetch guest:", err));
+        }
+    }, [guestId]);
+
+    // Fetch events
     useEffect(() => {
         async function fetchEvents() {
             try {
-                const res = await fetch("/src/data/events.json"); // fetch from your path
+                const res = await fetch("/src/data/events.json"); // static JSON fallback
                 const data: Event[] = await res.json();
                 setEvents(data);
             } catch (err) {
@@ -47,7 +69,11 @@ export default function Explore() {
     return (
         <Box p="2rem">
             <Heading mb={6}>
-                {userName ? `Hi, ${userName}! 👋` : "Hi there 👋"}
+                {guest
+                    ? `Hi, ${guest.firstName} ${guest.lastName}! 👋`
+                    : fallbackName
+                        ? `Hi, ${fallbackName}! 👋`
+                        : "Hi there 👋"}
             </Heading>
 
             <Heading size="md" mb={4}>Available Activities</Heading>
@@ -55,7 +81,7 @@ export default function Explore() {
                 {events.map((event) => (
                     <Link
                         as={RouterLink}
-                        to={`/events/${event.id}`}
+                        to={`/events/${event.id}?guestId=${guestId ?? ""}`} // 👈 pass guestId forward
                         key={event.id}
                         style={{ textDecoration: "none" }}
                     >

@@ -8,5 +8,9 @@
   },
   "ConnectionStrings": {
     "CosmosDB": "mongodb://localhost:27017"
+  },
+  "Host": {
+    "CORS": "*"
   }
 }
+  
