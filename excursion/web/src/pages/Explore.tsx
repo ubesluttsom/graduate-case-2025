@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link as RouterLink, useSearchParams } from "react-router-dom";
-import { Box, Heading, Text, Stack, Spinner, Link } from "@chakra-ui/react";
+import { Box, Heading, Text, Stack, Spinner, Link, Alert, AlertIcon } from "@chakra-ui/react";
 
 type Event = {
     id: string;
@@ -11,6 +11,8 @@ type Event = {
     guestIds: string[];
     createdAt: string;
     updatedAt: string;
+    price?: number;
+    imageUrl?: string;
 };
 
 type Guest = {
@@ -20,45 +22,55 @@ type Guest = {
     email: string;
 };
 
+const API_BASE = "http://localhost:7071/api";
+
 export default function Explore() {
     const location = useLocation();
     const state = location.state as { name?: string } | null;
     const fallbackName = state?.name ?? "";
 
     const [searchParams] = useSearchParams();
-    const guestId = searchParams.get("guestId");
+    const guestId = searchParams.get("guestId") ?? "";
 
     const [guest, setGuest] = useState<Guest | null>(null);
     const [events, setEvents] = useState<Event[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [eventsLoading, setEventsLoading] = useState(true);
+    const [eventsError, setEventsError] = useState<string | null>(null);
 
-    // Fetch guest if guestId exists
+    // Fetch guest (if guestId present)
     useEffect(() => {
-        if (guestId) {
-            fetch(`http://localhost:7071/api/guests/${guestId}`)
-                .then((res) => res.json())
-                .then(setGuest)
-                .catch((err) => console.error("Failed to fetch guest:", err));
-        }
+        if (!guestId) return;
+        fetch(`${API_BASE}/guests/${guestId}`)
+            .then((res) => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
+            .then(setGuest)
+            .catch((err) => console.error("Failed to fetch guest:", err));
     }, [guestId]);
 
-    // Fetch events
+    // Fetch events from backend
     useEffect(() => {
         async function fetchEvents() {
             try {
-                const res = await fetch("/src/data/events.json"); // static JSON fallback
+                setEventsLoading(true);
+                setEventsError(null);
+                const res = await fetch(`${API_BASE}/events`);
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data: Event[] = await res.json();
-                setEvents(data);
-            } catch (err) {
+                setEvents(data ?? []);
+            } catch (err: any) {
                 console.error("Failed to fetch events:", err);
+                setEventsError(err?.message ?? "Failed to fetch events");
             } finally {
-                setLoading(false);
+                setEventsLoading(false);
             }
         }
         fetchEvents();
     }, []);
 
-    if (loading) {
+    if (eventsLoading) {
         return (
             <Box p="2rem" textAlign="center">
                 <Spinner size="lg" />
@@ -76,30 +88,50 @@ export default function Explore() {
                         : "Hi there 👋"}
             </Heading>
 
+            {eventsError && (
+                <Alert status="error" mb={4}>
+                    <AlertIcon />
+                    {eventsError}
+                </Alert>
+            )}
+
             <Heading size="md" mb={4}>Available Activities</Heading>
-            <Stack spacing={4}>
-                {events.map((event) => (
-                    <Link
-                        as={RouterLink}
-                        to={`/events/${event.id}?guestId=${guestId ?? ""}`} // 👈 pass guestId forward
-                        key={event.id}
-                        style={{ textDecoration: "none" }}
-                    >
-                        <Box
-                            p={4}
-                            borderWidth="1px"
-                            borderRadius="lg"
-                            boxShadow="md"
-                            bg="white"
-                            _hover={{ bg: "blue.50" }}
-                        >
-                            <Heading size="sm" mb={2}>{event.name}</Heading>
-                            <Text><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</Text>
-                            <Text><strong>Available Spots:</strong> {event.availableSpots}</Text>
-                        </Box>
-                    </Link>
-                ))}
-            </Stack>
+
+            {events.length === 0 ? (
+                <Text>No activities found.</Text>
+            ) : (
+                <Stack spacing={4}>
+                    {events.map((event) => {
+                        const search = guestId ? `?guestId=${guestId}` : "";
+                        const remainingSpots = event.availableSpots - (event.guestIds?.length ?? 0);
+                        return (
+                            <Link
+                                as={RouterLink}
+                                to={`/events/${event.id}${search}`} // keep guestId in URL
+                                key={event.id}
+                                style={{ textDecoration: "none" }}
+                            >
+                                <Box
+                                    p={4}
+                                    borderWidth="1px"
+                                    borderRadius="lg"
+                                    boxShadow="md"
+                                    bg="white"
+                                    _hover={{ bg: "blue.50" }}
+                                >
+                                    <Heading size="sm" mb={2}>{event.name}</Heading>
+                                    <Text>
+                                        <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
+                                    </Text>
+                                    <Text>
+                                        <strong>Available Spots:</strong> {remainingSpots}
+                                    </Text>
+                                </Box>
+                            </Link>
+                        );
+                    })}
+                </Stack>
+            )}
         </Box>
     );
 }
