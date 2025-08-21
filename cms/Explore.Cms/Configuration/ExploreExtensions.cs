@@ -19,7 +19,8 @@ public static class ExploreExtensions
             })
             .AddScoped<IGuestService, GuestService>()
             .AddScoped<IRoomService, RoomService>()
-            .AddScoped<ITransactionService, TransactionService>();
+            .AddScoped<ITransactionService, TransactionService>()
+            .AddScoped<IEventService, EventService>();
 
         return services;
     }
