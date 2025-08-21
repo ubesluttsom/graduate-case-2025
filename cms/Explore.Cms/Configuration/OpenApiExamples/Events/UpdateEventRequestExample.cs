@@ -17,6 +17,8 @@ public class UpdateEventRequestExample : OpenApiExample<Events>
             Description = "Join us for an exclusive wine tasting experience featuring premium local wines.",
             Date = DateTime.Parse("2024-06-15T19:00:00Z"),
             AvailableSpots = 25,
+            Price = 229.99m,
+            ImageUrl = "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800",
             GuestIds = new List<Guid>()
         }, namingStrategy));
 
