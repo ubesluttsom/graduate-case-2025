@@ -1,0 +1,168 @@
+/* --- Layout / background --- */
+.home {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* keep form at the bottom */
+    overflow: hidden;
+
+    /* Set your image path here */
+    background: url("../assets/iceberg.png") center/cover no-repeat fixed;
+}
+
+
+.submit-btn {
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 12px 16px;
+    background: #f6a43a;  /* orange */
+    color: #0b243b;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+}
+
+.submit-btn:hover {
+    filter: brightness(0.95);
+}
+
+
+
+/* dark fade from bottom over the photo */
+.home::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            to top,
+            rgba(7, 29, 53, 0.9) 0%,
+            rgba(7, 29, 53, 0.6) 25%,
+            rgba(7, 29, 53, 0.15) 55%,
+            rgba(7, 29, 53, 0) 100%
+    );
+    pointer-events: none;
+}
+
+/* --- Top chrome (back + logo) --- */
+.topbar {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    display: grid;
+    place-items: center;
+    background: rgba(7, 29, 53, 0.7);
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
+    user-select: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f6a43a; /* warm orange like the sample */
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 6px;
+}
+.logo .mark {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #f6a43a;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+/* --- Heading over image --- */
+.hero-title {
+    position: absolute;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffe9cc;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    z-index: 2;
+}
+
+/* --- Form panel --- */
+.form-panel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    background: #0a2842;            /* deep navy */
+    border-top: 3px solid #2aa7ff;  /* thin blue line like the image */
+    padding: 18px 16px 22px;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.form {
+    max-width: 540px;
+    margin: 0 auto;
+    color: #d8e4ef;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #c9d6e2;
+}
+
+.text-input {
+    width: 100%;
+    background: #ffffff;
+    color: #0b243b;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 16px;
+    outline: none;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.text-input:focus {
+    border-color: #7cc3ff;
+    box-shadow: 0 0 0 3px rgba(42, 167, 255, 0.25);
+}
+
+.spacer {
+    height: 16px;
+}
+
+/* style Chakra button via class hook */
+.submit-btn.chakra-button {
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 12px 16px;
+    background: #f6a43a;            /* orange */
+    color: #0b243b;
+}
+.submit-btn.chakra-button:hover {
+    filter: brightness(0.95);
+}
+
+/* --- Small tweaks for larger screens --- */
+@media (min-width: 640px) {
+    .hero-title { font-size: 26px; }
+    .form-panel { padding: 22px 24px 28px; }
+}

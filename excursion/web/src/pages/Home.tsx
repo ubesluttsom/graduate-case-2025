@@ -1,133 +1,40 @@
-import {
-  useAccount,
-  useMsal,
-} from '@azure/msal-react';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
-import { Guest, Room } from 'cms-types';
-import { useEffect } from 'react';
-import useAccessToken from '../auth/useAccessToken';
-import { useGet } from '../hooks/useGet';
-import usePost from '../hooks/usePost';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Home.css"; // import your CSS file
 
-const Home = () => {
-  const { accounts } = useMsal();
-  const account = useAccount(accounts[0] || {});
-  const accessToken = useAccessToken();
-  
-  const {
-    data: guest,
-    isLoading,
-    isError,
-    mutate,
-  } = useGet<Guest>(`/guests/${account?.localAccountId}`);
+export default function Home() {
+    const [userName, setUserName] = useState("");
+    const navigate = useNavigate();
 
-  const { 
-    data: room,
-  } = useGet<Room>(`/rooms/${guest?.roomId}`, guest?.roomId !== undefined && guest?.roomId !== '');
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        if (!userName.trim()) return;
+        navigate("/explore", { state: { name: userName } });
+    }
 
-  const post = usePost();
+    return (
+        <div className="home">
+            {/* Heading over background */}
+            <h1 className="hero-title">Hello, what’s your name?</h1>
 
-  useEffect(() => {
-    if (isLoading) return;
-    
-    const checkAndCreateGuest = async () => {
-      if (
-        !isLoading &&
-        guest?.id === '00000000-0000-0000-0000-000000000000' &&
-        account
-      ) {
-        const newGuestData = {
-          firstName: account?.name?.split(' ').slice(0, -1).join(' '),
-          lastName: account?.name?.split(' ').slice(-1).join(' '),
-          id: account?.localAccountId,
-          email: account?.username
-        };
-
-        const newGuest = await post('/guests', newGuestData)
-          .then(response => {
-            if (!response.ok) {
-              return { id: '', firstName: '', lastName: '' };
-            }
-            return response.json();
-          })
-          .catch(e => {
-            console.log(e);
-            return { id: '', firstName: '', lastName: '' };
-          });
-
-        mutate(newGuest, false);
-      }
-    };
-
-    checkAndCreateGuest();
-  }, [isLoading, guest, account, mutate, post, isError]);
-
-  return (
-    <Flex
-      width="100vw"
-      height="100vh"
-      alignContent="center"
-      justifyContent="center"
-      backgroundColor="#f0f0f0"
-    >
-      <Box m="0 auto">
-        <Heading as="h1" textAlign="center" fontSize="5xl" mt="100px">
-          Welcome, {account?.name}!
-        </Heading>
-        <Text fontSize="xl" textAlign="center" mt="30px">
-          {guest && guest.id == ''
-            ? 'Hang on, we are creating a guest account for you...'
-            : !guest
-            ? 'There was a problem retrieving your guest account...'
-            : room && room.roomNumber == ''
-            ? 'Hang on, your room is not ready yet...'
-            : !room
-            ? 'There was a problem retrieving your room...'
-            : 'Your room number is ' + room?.roomNumber}
-        </Text>
-        <Box>
-          {accessToken &&
-            CopyToClipboardButton(
-              accessToken,
-              'Copy access token to clipboard'
-            )}
-        </Box>
-      </Box>
-    </Flex>
-  );
-};
-
-const CopyToClipboardButton = (text: string, label?: string) => {
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(text);
-  };
-
-  return (
-    <Tooltip label={label ?? 'Copy to clipboard'}>
-      <Button
-        w="fit-content"
-        p="4"
-        px="4px"
-        colorScheme="blue"
-        borderRadius="10px"
-        m="0 auto"
-        mt="8"
-        fontWeight="bold"
-        color="white"
-        fontSize="l"
-        onClick={copyToClipboard}
-      >
-        📄
-      </Button>
-    </Tooltip>
-  );
+            {/* Form panel at the bottom */}
+            <div className="form-panel">
+                <form className="form" onSubmit={handleSubmit}>
+                    <label htmlFor="fname">Your name</label>
+                    <input
+                        id="fname"
+                        type="text"
+                        className="text-input"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
+                        placeholder="Enter your name"
+                    />
+                    <div className="spacer" />
+                    <button type="submit" className="submit-btn">
+                        Go
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
 }
-
-export default Home;
