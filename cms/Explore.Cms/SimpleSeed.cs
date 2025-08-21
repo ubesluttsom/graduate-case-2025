@@ -69,6 +69,8 @@ public static class SimpleSeed
                 {"description", "Experience the Arctic waters in our high-speed rigid inflatable boats. Navigate through icebergs while searching for seals, walruses, and Arctic foxes along the dramatic coastline of Svalbard."}, 
                 {"date", DateTime.Now.AddDays(2)}, 
                 {"availableSpots", 12},
+                {"price", 299.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -77,6 +79,8 @@ public static class SimpleSeed
                 {"description", "Mush through the pristine Arctic wilderness with our team of Greenland huskies. Learn traditional sledding techniques while traversing frozen fjords and snow-covered tundra."}, 
                 {"date", DateTime.Now.AddDays(3)}, 
                 {"availableSpots", 8},
+                {"price", 449.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1551524164-6cf894f02e8b?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -85,6 +89,8 @@ public static class SimpleSeed
                 {"description", "Roar across the frozen landscape on powerful snowmobiles. Visit remote glaciers, abandoned Soviet mining settlements, and enjoy panoramic views of the Arctic Ocean."}, 
                 {"date", DateTime.Now.AddDays(4)}, 
                 {"availableSpots", 10},
+                {"price", 379.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1551524164-c906b4fe8433?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -93,6 +99,8 @@ public static class SimpleSeed
                 {"description", "Join our marine biologist on a zodiac expedition to spot magnificent Arctic whales including beluga, narwhal, and bowhead whales. Learn about Arctic marine ecosystems."}, 
                 {"date", DateTime.Now.AddDays(5)}, 
                 {"availableSpots", 15},
+                {"price", 329.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -101,6 +109,8 @@ public static class SimpleSeed
                 {"description", "Spend a night under the Antarctic stars in our heated expedition tents. Experience 24-hour daylight, glacier calving sounds, and the ultimate polar wilderness camping."}, 
                 {"date", DateTime.Now.AddDays(6)}, 
                 {"availableSpots", 6},
+                {"price", 799.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -109,6 +119,8 @@ public static class SimpleSeed
                 {"description", "Paddle silently through mirror-calm Arctic waters in our specially designed cold-water kayaks. Get up close to icebergs and potentially curious seals in their natural habitat."}, 
                 {"date", DateTime.Now.AddDays(7)}, 
                 {"availableSpots", 8},
+                {"price", 249.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -117,6 +129,8 @@ public static class SimpleSeed
                 {"description", "Strap on traditional snowshoes and trek across the Arctic tundra. Visit ancient Inuit archaeological sites and learn survival techniques used by polar explorers."}, 
                 {"date", DateTime.Now.AddDays(8)}, 
                 {"availableSpots", 12},
+                {"price", 199.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1551524164-05c7ca5de8ad?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -125,6 +139,8 @@ public static class SimpleSeed
                 {"description", "Embark on a challenging 8-hour guided hike through Svalbard's dramatic mountain ranges. Encounter Arctic wildlife, visit research stations, and witness stunning glacier formations."}, 
                 {"date", DateTime.Now.AddDays(9)}, 
                 {"availableSpots", 10},
+                {"price", 279.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1551524164-6b5d1bcb5ac5?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -133,6 +149,8 @@ public static class SimpleSeed
                 {"description", "Join our wildlife photographer for an exclusive workshop on capturing Arctic wildlife. Learn specialized techniques for photographing polar bears, Arctic foxes, and seabirds."}, 
                 {"date", DateTime.Now.AddDays(10)}, 
                 {"availableSpots", 6},
+                {"price", 599.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1589656966895-2f33e7653819?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -141,6 +159,8 @@ public static class SimpleSeed
                 {"description", "Experience the magic of Aurora Borealis during our midnight expedition. Our astronomer will guide you through Arctic constellations while you witness nature's light show."}, 
                 {"date", DateTime.Now.AddDays(15)}, 
                 {"availableSpots", 20},
+                {"price", 349.99m},
+                {"imageUrl", "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800"},
                 {"guestIds", new BsonArray()}
             }
         };

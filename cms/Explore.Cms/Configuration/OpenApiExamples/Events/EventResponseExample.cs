@@ -17,6 +17,8 @@ public class EventResponseExample : OpenApiExample<Events>
             Description = "Join us for an exclusive wine tasting experience featuring local wines.",
             Date = DateTime.Parse("2024-06-15T18:00:00Z"),
             AvailableSpots = 20,
+            Price = 199.99m,
+            ImageUrl = "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800",
             GuestIds = new List<Guid>
             {
                 Guid.Parse("87654321-4321-4321-4321-210987654321"),
