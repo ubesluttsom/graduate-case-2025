@@ -60,6 +60,24 @@ public static class SimpleSeed
         await db.GetCollection<BsonDocument>("guests").InsertManyAsync(guests);
         Console.WriteLine($"Created {guests.Length} guests");
         
+        // Update rooms with their assigned guests
+        var roomsCollection = db.GetCollection<BsonDocument>("rooms");
+        
+        // Group guests by room and update each room with its guest IDs
+        var guestsByRoom = guests.GroupBy(g => g["roomId"].AsBsonBinaryData);
+        
+        foreach (var roomGroup in guestsByRoom)
+        {
+            var roomId = roomGroup.Key;
+            var roomGuestIds = new BsonArray(roomGroup.Select(g => g["_id"]));
+            
+            await roomsCollection.UpdateOneAsync(
+                Builders<BsonDocument>.Filter.Eq("_id", roomId),
+                Builders<BsonDocument>.Update.Set("guestIds", roomGuestIds)
+            );
+        }
+        Console.WriteLine("Updated rooms with guest assignments");
+        
         // Create Arctic events
         var events = new[]
         {
@@ -227,10 +245,25 @@ public static class SimpleSeed
                 allTransactions.Add(transaction);
             }
         }
-        
+
         await db.GetCollection<BsonDocument>("transactions").InsertManyAsync(allTransactions);
         Console.WriteLine($"Created {allTransactions.Count} transactions");
         
+        // Update rooms with their transaction IDs
+        var transactionsByRoom = allTransactions.GroupBy(t => t["roomId"].AsBsonBinaryData);
+        
+        foreach (var roomGroup in transactionsByRoom)
+        {
+            var roomId = roomGroup.Key;
+            var roomTransactionIds = new BsonArray(roomGroup.Select(t => t["_id"]));
+            
+            await roomsCollection.UpdateOneAsync(
+                Builders<BsonDocument>.Filter.Eq("_id", roomId),
+                Builders<BsonDocument>.Update.Set("transactionIds", roomTransactionIds)
+            );
+        }
+        Console.WriteLine("Updated rooms with transaction assignments");
+         
         Console.WriteLine("Database seeding completed!");
         Console.WriteLine("\nCollections created:");
         Console.WriteLine($"- rooms: {rooms.Length} documents");
