@@ -1,0 +1,32 @@
+[
+  {
+    "id": "d4b9f6c0-7c2e-4df0-bf0a-9d8a5671e111",
+    "name": "Arctic Ice Cave Hike",
+    "date": "2025-09-01T09:00:00Z",
+    "availableSpots": 15,
+    "description": "Guided hike into the stunning blue ice caves of Svalbard.",
+    "guestIds": [],
+    "createdAt": "2025-08-21T10:00:00Z",
+    "updatedAt": "2025-08-21T10:00:00Z"
+  },
+  {
+    "id": "f2c21c3a-541d-44a0-89c9-ff0b6737b222",
+    "name": "Northern Lights Photography Tour",
+    "date": "2025-09-05T22:00:00Z",
+    "availableSpots": 10,
+    "description": "Night excursion to capture the aurora borealis.",
+    "guestIds": [],
+    "createdAt": "2025-08-21T10:15:00Z",
+    "updatedAt": "2025-08-21T10:15:00Z"
+  },
+  {
+    "id": "a7d90287-3e91-4711-8f3a-3f735a3bb333",
+    "name": "Polar Bear Watching Expedition",
+    "date": "2025-09-10T07:30:00Z",
+    "availableSpots": 8,
+    "description": "A guided expedition to observe polar bears in the wild.",
+    "guestIds": [],
+    "createdAt": "2025-08-21T10:30:00Z",
+    "updatedAt": "2025-08-21T10:30:00Z"
+  }
+]
