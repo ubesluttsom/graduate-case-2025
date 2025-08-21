@@ -12,6 +12,13 @@ public static class SimpleSeed
         var db = client.GetDatabase(databaseName);
         
         Console.WriteLine("Starting database seeding...");
+
+        // Clear entire database for clean slate
+        await client.DropDatabaseAsync(databaseName);
+        db = client.GetDatabase(databaseName);
+
+        // Use fixed seed for consistent data
+        var random = new Random(42);
         
         // Clear existing data
         await db.DropCollectionAsync("rooms");
@@ -141,7 +148,6 @@ public static class SimpleSeed
         Console.WriteLine($"Created {events.Length} events");
         
         // Assign guests to events (first 6 events only)
-        var random = new Random();
         var eventsCollection = db.GetCollection<BsonDocument>("events");
         
         for (int i = 0; i < 6; i++)
