@@ -158,34 +158,78 @@ export default function Explore() {
                         return (
                             <Box
                                 key={event.id}
-                                p={4}
                                 borderWidth="1px"
                                 borderRadius="lg"
                                 boxShadow="md"
                                 bg="white"
                                 position="relative"
+                                overflow="hidden"
                             >
-                                {/* Status indicator */}
-                                {isCurrentGuestSignedUp && (
+                                {/* Image section with gradient overlay */}
+                                <Box position="relative" height="150px" bg="gray.100">
+                                    {event.imageUrl && (
+                                        <Box
+                                            as="img"
+                                            src={event.imageUrl}
+                                            alt={event.name}
+                                            width="100%"
+                                            height="100%"
+                                            objectFit="cover"
+                                            onError={(e) => {
+                                                // Hide image on error and show gradient fallback
+                                                e.currentTarget.style.display = 'none';
+                                            }}
+                                        />
+                                    )}
+                                    
+                                    {/* Gradient overlay */}
                                     <Box
                                         position="absolute"
-                                        top={2}
-                                        right={2}
-                                        bg="green.500"
-                                        color="white"
-                                        px={2}
-                                        py={1}
-                                        borderRadius="md"
-                                        fontSize="xs"
-                                        fontWeight="bold"
+                                        top={0}
+                                        left={0}
+                                        right={0}
+                                        bottom={0}
+                                        bgGradient={event.imageUrl 
+                                            ? "linear(to-b, transparent 0%, blackAlpha.300 50%, blackAlpha.600 100%)"
+                                            : "linear(to-br, blue.400, purple.500, pink.400)"
+                                        }
+                                    />
+                                    
+                                    {/* Event name overlay */}
+                                    <Box
+                                        position="absolute"
+                                        bottom={3}
+                                        left={3}
+                                        right={3}
                                     >
-                                        ✓ Signed up
+                                        <Heading size="sm" color="white" textShadow="0 1px 3px rgba(0,0,0,0.8)">
+                                            {event.name}
+                                        </Heading>
                                     </Box>
-                                )}
+                                    
+                                    {/* Status indicator */}
+                                    {isCurrentGuestSignedUp && (
+                                        <Box
+                                            position="absolute"
+                                            top={2}
+                                            right={2}
+                                            bg="green.500"
+                                            color="white"
+                                            px={2}
+                                            py={1}
+                                            borderRadius="md"
+                                            fontSize="xs"
+                                            fontWeight="bold"
+                                            boxShadow="0 2px 4px rgba(0,0,0,0.3)"
+                                        >
+                                            ✓ Signed up
+                                        </Box>
+                                    )}
+                                </Box>
                                 
-                                <VStack align="stretch" spacing={3}>
+                                {/* Content section */}
+                                <VStack align="stretch" spacing={3} p={4}>
                                     <Box>
-                                        <Heading size="sm" mb={2}>{event.name}</Heading>
                                         <Text fontSize="sm" color="gray.600" mb={2}>
                                             {event.description}
                                         </Text>
