@@ -88,7 +88,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(2)}, 
                 {"availableSpots", 12},
                 {"price", 299.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1686779762378-93aa7b99977d?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -98,7 +98,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(3)}, 
                 {"availableSpots", 8},
                 {"price", 449.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1551524164-6cf894f02e8b?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1706339141390-10d7ddce2a18?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -108,7 +108,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(4)}, 
                 {"availableSpots", 10},
                 {"price", 379.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1551524164-c906b4fe8433?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1559554757-1554c2588a01?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -118,7 +118,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(5)}, 
                 {"availableSpots", 15},
                 {"price", 329.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1551415923-51267c1f2d73?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -128,7 +128,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(6)}, 
                 {"availableSpots", 6},
                 {"price", 799.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1594488540021-53a97d8dab06?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -138,7 +138,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(7)}, 
                 {"availableSpots", 8},
                 {"price", 249.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1634993891386-7373babb1625?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -148,7 +148,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(8)}, 
                 {"availableSpots", 12},
                 {"price", 199.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1551524164-05c7ca5de8ad?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1728081931259-093429cf8467?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
@@ -158,7 +158,7 @@ public static class SimpleSeed
                 {"date", DateTime.Now.AddDays(9)}, 
                 {"availableSpots", 10},
                 {"price", 279.99m},
-                {"imageUrl", "https://images.unsplash.com/photo-1551524164-6b5d1bcb5ac5?w=800"},
+                {"imageUrl", "https://images.unsplash.com/photo-1679385445474-70eeb86d3a71?w=800"},
                 {"guestIds", new BsonArray()}
             },
             new BsonDocument { 
