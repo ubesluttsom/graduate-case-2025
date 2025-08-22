@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link as RouterLink, useSearchParams } from "react-router-dom";
-import { Box, Heading, Text, Stack, Spinner, Link, Alert, AlertIcon } from "@chakra-ui/react";
+import { Box, Heading, Text, Stack, Spinner, Link, Alert, AlertIcon, Button, HStack, useDisclosure } from "@chakra-ui/react";
+import RoomSummary from "../components/RoomSummary";
 
 type Event = {
     id: string;
@@ -20,6 +21,7 @@ type Guest = {
     firstName: string;
     lastName: string;
     email: string;
+    roomId?: string;
 };
 
 const API_BASE = "http://localhost:7071/api";
@@ -36,6 +38,8 @@ export default function Explore() {
     const [events, setEvents] = useState<Event[]>([]);
     const [eventsLoading, setEventsLoading] = useState(true);
     const [eventsError, setEventsError] = useState<string | null>(null);
+
+    const { isOpen: isRoomSummaryOpen, onOpen: onRoomSummaryOpen, onClose: onRoomSummaryClose } = useDisclosure();
 
     // Fetch guest (if guestId present)
     useEffect(() => {
@@ -80,13 +84,21 @@ export default function Explore() {
 
     return (
         <Box p="2rem">
-            <Heading mb={6}>
-                {guest
-                    ? `Hi, ${guest.firstName} ${guest.lastName}! 👋`
-                    : fallbackName
-                        ? `Hi, ${fallbackName}! 👋`
-                        : "Hi there 👋"}
-            </Heading>
+            <HStack justify="space-between" align="start" mb={6}>
+                <Heading>
+                    {guest
+                        ? `Hi, ${guest.firstName} ${guest.lastName}! 👋`
+                        : fallbackName
+                            ? `Hi, ${fallbackName}! 👋`
+                            : "Hi there 👋"}
+                </Heading>
+                
+                {guest?.roomId && (
+                    <Button colorScheme="blue" variant="outline" onClick={onRoomSummaryOpen}>
+                        Room Tab
+                    </Button>
+                )}
+            </HStack>
 
             {eventsError && (
                 <Alert status="error" mb={4}>
@@ -132,6 +144,12 @@ export default function Explore() {
                     })}
                 </Stack>
             )}
+
+            <RoomSummary 
+                isOpen={isRoomSummaryOpen} 
+                onClose={onRoomSummaryClose} 
+                guest={guest} 
+            />
         </Box>
     );
 }
