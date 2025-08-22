@@ -1,7 +1,20 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link as RouterLink, useSearchParams } from "react-router-dom";
-import { Box, Heading, Text, Stack, Spinner, Link, Alert, AlertIcon, Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
+import {
+    Box,
+    Heading,
+    Text,
+    Spinner,
+    Alert,
+    AlertIcon,
+    Button,
+    HStack,
+    VStack,
+    useDisclosure,
+    SimpleGrid,
+} from "@chakra-ui/react";
 import RoomSummary from "../components/RoomSummary";
+import "./explore.css";
 
 type Event = {
     id: string;
@@ -40,35 +53,33 @@ export default function Explore() {
     const [eventsLoading, setEventsLoading] = useState(true);
     const [eventsError, setEventsError] = useState<string | null>(null);
 
-    const { isOpen: isRoomSummaryOpen, onOpen: onRoomSummaryOpen, onClose: onRoomSummaryClose } = useDisclosure();
+    const { isOpen: isRoomSummaryOpen, onOpen: onRoomSummaryOpen, onClose: onRoomSummaryClose } =
+        useDisclosure();
 
-    // Fetch guest and roommates (if guestId present)
+    // Fetch guest and roommates
     useEffect(() => {
         if (!guestId) return;
-        
+
         async function fetchGuestAndRoommates() {
             try {
-                // First fetch the guest
                 const guestRes = await fetch(`${API_BASE}/guests/${guestId}`);
                 if (!guestRes.ok) throw new Error(`HTTP ${guestRes.status}`);
                 const guestData: Guest = await guestRes.json();
                 setGuest(guestData);
 
-                // If guest has a room, fetch roommates
                 if (guestData.roomId) {
                     const roomRes = await fetch(`${API_BASE}/rooms/${guestData.roomId}`);
                     if (roomRes.ok) {
                         const roomData = await roomRes.json();
-                        
-                        // Fetch all guests in the room
+
                         if (roomData.guestIds && roomData.guestIds.length > 0) {
                             const roommatePromises = roomData.guestIds
-                                .filter((id: string) => id !== guestId) // Exclude current guest
+                                .filter((id: string) => id !== guestId)
                                 .map(async (id: string) => {
                                     const res = await fetch(`${API_BASE}/guests/${id}`);
                                     return res.ok ? await res.json() : null;
                                 });
-                            
+
                             const roommateData = await Promise.all(roommatePromises);
                             setRoommates(roommateData.filter(Boolean));
                         }
@@ -82,14 +93,13 @@ export default function Explore() {
         fetchGuestAndRoommates();
     }, [guestId]);
 
-    // Fetch events from backend
+    // Fetch events
     useEffect(() => {
         async function fetchEvents() {
             try {
                 setEventsLoading(true);
                 setEventsError(null);
                 const res = await fetch(`${API_BASE}/events`);
-
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data: Event[] = await res.json();
                 setEvents(data ?? []);
@@ -105,25 +115,37 @@ export default function Explore() {
 
     if (eventsLoading) {
         return (
-            <Box p="2rem" textAlign="center">
+            <Box p={{ base: "1rem", md: "2rem" }} textAlign="center" bg="var(--navy)" minH="100vh">
                 <Spinner size="lg" />
             </Box>
         );
     }
 
     return (
-        <Box p="2rem">
-            <HStack justify="space-between" align="start" mb={6}>
-                <Heading>
+        <Box
+            p={{ base: "1rem", sm: "1.25rem", md: "2rem" }}
+            className="explore"
+            maxW="100%"
+            minH="100vh"
+            bg="var(--navy)"     // full navy background
+        >
+            <HStack justify="space-between" align="start" mb={{ base: 4, md: 6 }}>
+                <Heading fontSize={{ base: "xl", sm: "2xl" }} color="white">
                     {guest
                         ? `Hi, ${guest.firstName} ${guest.lastName}! 👋`
                         : fallbackName
                             ? `Hi, ${fallbackName}! 👋`
                             : "Hi there 👋"}
                 </Heading>
-                
+
                 {guest?.roomId && (
-                    <Button colorScheme="blue" variant="outline" onClick={onRoomSummaryOpen}>
+                    <Button
+                        colorScheme="blue"
+                        variant="outline"
+                        onClick={onRoomSummaryOpen}
+                        className="header-outline-btn"
+                        size="sm"
+                    >
                         Room Tab
                     </Button>
                 )}
@@ -136,37 +158,37 @@ export default function Explore() {
                 </Alert>
             )}
 
-            <Heading size="md" mb={4}>Available Activities</Heading>
+            <Heading size="md" mb={4} className="section-title" fontSize={{ base: "md", sm: "lg" }} color="white">
+                Available Activities
+            </Heading>
 
             {events.length === 0 ? (
-                <Text>No activities found.</Text>
+                <Text color="white">No activities found.</Text>
             ) : (
-                <Stack spacing={4}>
+                <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={{ base: 3, md: 4 }}>
                     {events.map((event) => {
                         const search = guestId ? `?guestId=${guestId}` : "";
                         const totalSignedUp = event.guestIds?.length ?? 0;
                         const remainingSpots = event.availableSpots - totalSignedUp;
-                        
-                        // Check if current guest is signed up
+
                         const isCurrentGuestSignedUp = guest && event.guestIds?.includes(guest.id);
-                        
-                        // Check which roommates are signed up
-                        const signedUpRoommates = roommates.filter(roommate => 
-                            event.guestIds?.includes(roommate.id)
-                        );
-                        
+                        const signedUpRoommates = roommates.filter((roommate) => event.guestIds?.includes(roommate.id));
+
                         return (
                             <Box
                                 key={event.id}
-                                borderWidth="1px"
                                 borderRadius="lg"
                                 boxShadow="md"
-                                bg="white"
+                                bg="var(--navy-700)"   // darker navy card
+                                color="white"
                                 position="relative"
                                 overflow="hidden"
+                                className="event-card"
+                                display="flex"
+                                flexDirection="column"
                             >
-                                {/* Image section with gradient overlay */}
-                                <Box position="relative" height="150px" bg="gray.100">
+                                {/* Image */}
+                                <Box position="relative" height={{ base: "150px", sm: "180px" }} bg="gray.800">
                                     {event.imageUrl && (
                                         <Box
                                             as="img"
@@ -176,38 +198,27 @@ export default function Explore() {
                                             height="100%"
                                             objectFit="cover"
                                             onError={(e) => {
-                                                // Hide image on error and show gradient fallback
-                                                e.currentTarget.style.display = 'none';
+                                                e.currentTarget.style.display = "none";
                                             }}
                                         />
                                     )}
-                                    
-                                    {/* Gradient overlay */}
                                     <Box
                                         position="absolute"
                                         top={0}
                                         left={0}
                                         right={0}
                                         bottom={0}
-                                        bgGradient={event.imageUrl 
-                                            ? "linear(to-b, transparent 0%, blackAlpha.300 50%, blackAlpha.600 100%)"
-                                            : "linear(to-br, blue.400, purple.500, pink.400)"
+                                        bgGradient={
+                                            event.imageUrl
+                                                ? "linear(to-b, transparent 0%, blackAlpha.300 50%, blackAlpha.600 100%)"
+                                                : "linear(to-br, blue.400, purple.500, pink.400)"
                                         }
                                     />
-                                    
-                                    {/* Event name overlay */}
-                                    <Box
-                                        position="absolute"
-                                        bottom={3}
-                                        left={3}
-                                        right={3}
-                                    >
-                                        <Heading size="sm" color="white" textShadow="0 1px 3px rgba(0,0,0,0.8)">
+                                    <Box position="absolute" bottom={3} left={{ base: 3, sm: 4 }} right={{ base: 3, sm: 4 }}>
+                                        <Heading size="sm" fontSize={{ base: "md", sm: "lg" }} color="white" textShadow="0 1px 3px rgba(0,0,0,0.8)">
                                             {event.name}
                                         </Heading>
                                     </Box>
-                                    
-                                    {/* Status indicator */}
                                     {isCurrentGuestSignedUp && (
                                         <Box
                                             position="absolute"
@@ -221,66 +232,56 @@ export default function Explore() {
                                             fontSize="xs"
                                             fontWeight="bold"
                                             boxShadow="0 2px 4px rgba(0,0,0,0.3)"
+                                            className="status-badge"
                                         >
                                             ✓ Signed up
                                         </Box>
                                     )}
                                 </Box>
-                                
-                                {/* Content section */}
-                                <VStack align="stretch" spacing={3} p={4}>
+
+                                {/* Content */}
+                                <VStack align="stretch" spacing={3} p={{ base: 3, sm: 4 }} flex="1">
                                     <Box>
-                                        <Text fontSize="sm" color="gray.600" mb={2}>
+                                        <Text fontSize={{ base: "sm", sm: "md" }} color="gray.200" mb={2}>
                                             {event.description}
                                         </Text>
                                     </Box>
-                                    
-                                    <HStack justify="space-between" fontSize="sm">
+
+                                    <HStack justify="space-between" fontSize={{ base: "sm", sm: "md" }} align="start">
                                         <VStack align="start" spacing={1}>
                                             <Text>
                                                 <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
                                             </Text>
                                             <Text>
-                                                <strong>Time:</strong> {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                <strong>Time:</strong>{" "}
+                                                {new Date(event.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                                             </Text>
                                         </VStack>
                                         <VStack align="end" spacing={1}>
-                                            <Text color={remainingSpots > 0 ? "green.600" : "red.600"} fontWeight="medium">
-                                                {remainingSpots > 0 
-                                                    ? `${remainingSpots} spots left` 
-                                                    : "Fully booked"}
+                                            <Text
+                                                color={remainingSpots > 0 ? "green.300" : "red.300"}
+                                                fontWeight="medium"
+                                                className={remainingSpots > 0 ? "spots-left" : "spots-full"}
+                                            >
+                                                {remainingSpots > 0 ? `${remainingSpots} spots left` : "Fully booked"}
                                             </Text>
-                                            <Text fontSize="xs" color="gray.500">
+                                            <Text fontSize="xs" color="gray.400">
                                                 {totalSignedUp} of {event.availableSpots} taken
                                             </Text>
-                                            {event.price && (
-                                                <Text fontWeight="medium">
-                                                    ${event.price.toFixed(2)}
-                                                </Text>
-                                            )}
+                                            {event.price && <Text fontWeight="medium">${event.price.toFixed(2)}</Text>}
                                         </VStack>
                                     </HStack>
-                                    
-                                    {/* Roommate status */}
+
                                     {signedUpRoommates.length > 0 && (
-                                        <Text fontSize="sm" color="blue.600">
-                                            👥 {signedUpRoommates.map(r => r.firstName).join(', ')} {signedUpRoommates.length === 1 ? 'is' : 'are'} signed up
+                                        <Text fontSize={{ base: "sm", sm: "md" }} color="blue.300">
+                                            👥 {signedUpRoommates.map((r) => r.firstName).join(", ")}{" "}
+                                            {signedUpRoommates.length === 1 ? "is" : "are"} signed up
                                         </Text>
                                     )}
-                                    
-                                    <HStack justify="space-between" align="center">
-                                        <Button
-                                            as={RouterLink}
-                                            to={`/events/${event.id}${search}`}
-                                            size="sm"
-                                            colorScheme="blue"
-                                            variant="outline"
-                                        >
-                                            View Details
-                                        </Button>
-                                        
+
+                                    <HStack justify="flex-end" align="center" mt="auto">
                                         {isCurrentGuestSignedUp ? (
-                                            <Text fontSize="sm" color="green.600" fontWeight="medium">
+                                            <Text fontSize="sm" color="green.300" fontWeight="medium">
                                                 You're signed up!
                                             </Text>
                                         ) : remainingSpots > 0 ? (
@@ -289,11 +290,12 @@ export default function Explore() {
                                                 to={`/events/${event.id}${search}`}
                                                 size="sm"
                                                 colorScheme="green"
+                                                className="btn-cta"
                                             >
                                                 Sign Up
                                             </Button>
                                         ) : (
-                                            <Text fontSize="sm" color="red.600" fontWeight="medium">
+                                            <Text fontSize="sm" color="red.300" fontWeight="medium">
                                                 Fully booked
                                             </Text>
                                         )}
@@ -302,14 +304,10 @@ export default function Explore() {
                             </Box>
                         );
                     })}
-                </Stack>
+                </SimpleGrid>
             )}
 
-            <RoomSummary 
-                isOpen={isRoomSummaryOpen} 
-                onClose={onRoomSummaryClose} 
-                guest={guest} 
-            />
+            <RoomSummary isOpen={isRoomSummaryOpen} onClose={onRoomSummaryClose} guest={guest} />
         </Box>
     );
 }

@@ -1,0 +1,131 @@
+/* Shared tokens: match home.css */
+:root{
+    --navy:#0f233a;
+    --navy-700:#0b1a2b;
+    --orange:#f6a65b;
+    --orange-600:#f29b44;
+    --text:#fff;
+    --muted:#b8c2d4;
+    --radius:14px;
+}
+
+/* Phone-like centered canvas */
+.explore{
+    min-height:100vh;
+    max-width:430px;         /* keep a mobile width on desktop */
+    margin:0 auto;
+    padding:1rem;            /* overrides Chakra p if needed */
+    background:var(--navy);
+    color:var(--text);
+    box-shadow:0 12px 30px rgba(0,0,0,.25);
+    display:flex;
+    flex-direction:column;
+}
+
+/* Top greeting row */
+.explore .chakra-heading{
+    color:#ffdcb5;
+    letter-spacing:.01em;
+}
+
+/* “Room Tab” (outline button in header) */
+.explore .header-outline-btn.chakra-button{
+    background:transparent;
+    border:2px solid var(--orange-600);
+    color:#ffdcb5;
+    border-radius:10px;
+    font-weight:700;
+}
+
+/* Section title */
+.explore .section-title{
+    color:#ffdcb5;
+    margin-top:.5rem;
+}
+
+/* Event list spacing aligns with mobile rhythm */
+.explore .chakra-stack{
+    gap:12px;
+}
+
+/* Event card */
+.explore .event-card{
+    border:none !important;
+    border-radius:16px !important;
+    overflow:hidden;
+    background:#0f1f36 !important;             /* darker navy card */
+    box-shadow:0 10px 18px rgba(0,0,0,.28);
+}
+
+/* Card image area already defined inline; ensure height on small screens */
+.explore .event-card [data-image],
+.explore .event-card .chakra-box[style*="height: 150px"]{
+    min-height:150px;
+}
+
+/* Body text inside cards */
+.explore .event-card .chakra-text{
+    color:#e3e8f4;
+}
+.explore .event-card .chakra-text[font-size="xs"],
+.explore .event-card .chakra-text[data-theme="muted"]{
+    color:#a9b6cd;
+}
+
+/* Availability colors */
+.explore .spots-left{ color:#6ee7a8; }      /* green-300 */
+.explore .spots-full{ color:#f87171; }      /* red-400 */
+
+/* Small outlined button (“View Details”) — same as Home’s little Log In */
+.explore .btn-outline.chakra-button{
+    background:var(--navy-700);
+    color:#ffdcb5;
+    border:2px solid var(--orange-600);
+    border-radius:10px;
+    padding:.45rem .8rem;
+    font-weight:700;
+    letter-spacing:.04em;
+}
+
+/* Primary CTA (“Sign Up”) — same look as Home’s bottom CTA */
+.explore .btn-cta.chakra-button{
+    background:var(--orange);
+    color:#1b1b1b;
+    border:none;
+    border-radius:12px;
+    padding:.55rem .9rem;
+    font-weight:800;
+    letter-spacing:.01em;
+    box-shadow:0 6px 14px rgba(242,155,68,.25);
+}
+.explore .btn-cta.chakra-button:active{ transform:translateY(1px); }
+
+/* Card badges (e.g., ✓ Signed up) */
+.explore .event-card .status-badge{
+    background:#22c55e !important;
+    color:#071a0d !important;
+    font-weight:800;
+}
+
+/* Links */
+.explore a{
+    color:#ffdcb5;
+    text-decoration:underline;
+}
+
+/* Alerts harmonize with dark panel */
+.explore .chakra-alert{
+    background:#152945;
+    color:#ffe6cc;
+    border-left:4px solid var(--orange-600);
+}
+
+/* Layout tweaks for the action row inside cards */
+.explore .event-card .chakra-stack[direction="row"]{
+    align-items:center;
+}
+
+/* Make it breathe a bit more on slightly wider phones */
+@media (min-width: 420px){
+    .explore{ padding:1.25rem; }
+}

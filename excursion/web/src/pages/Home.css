@@ -1,168 +1,127 @@
-/* --- Layout / background --- */
-.home {
-    min-height: 100vh;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* keep form at the bottom */
-    overflow: hidden;
-
-    /* Set your image path here */
-    background: url("../assets/iceberg.png") center/cover no-repeat fixed;
+:root{
+    --navy:#0f233a;           /* dark panel background */
+    --navy-700:#0b1a2b;
+    --orange:#f6a65b;         /* CTA / accents */
+    --orange-600:#f29b44;
+    --text:#fff;
+    --muted:#b8c2d4;
+    --radius:14px;
 }
 
-
-.submit-btn {
-    width: 100%;
-    border-radius: 10px;
-    font-weight: 700;
-    padding: 12px 16px;
-    background: #f6a43a;  /* orange */
-    color: #0b243b;
-    border: none;
-    cursor: pointer;
-    transition: filter 0.2s ease;
+/* Phone frame container */
+.home{
+    min-height:100vh;
+    max-width:430px;          /* keeps a phone-like width on desktop */
+    margin:0 auto;
+    background:#000;          /* behind the hero image for safe edges */
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
 
-.submit-btn:hover {
-    filter: brightness(0.95);
+/* Hero image section */
+.hero{
+    position:relative;
+    height:56vh;
+    background-image:url("../assets/iceberg.png"); /* ← replace with your image path */
+    background-size:cover;
+    background-position:center;
+    isolation:isolate;
+}
+.hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(to bottom, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 45%, rgba(0,0,0,.35) 100%);
 }
 
-
-
-/* dark fade from bottom over the photo */
-.home::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-            to top,
-            rgba(7, 29, 53, 0.9) 0%,
-            rgba(7, 29, 53, 0.6) 25%,
-            rgba(7, 29, 53, 0.15) 55%,
-            rgba(7, 29, 53, 0) 100%
-    );
-    pointer-events: none;
+/* Back button */
+.back-btn{
+    position:absolute; top:.6rem; left:.6rem;
+    z-index:2;
+    border:none; background:rgba(15,35,58,.55);
+    color:#ffdcb5;
+    font-size:1.1rem; line-height:1;
+    width:34px; height:34px; border-radius:999px;
 }
 
-/* --- Top chrome (back + logo) --- */
-.topbar {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    right: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 2;
+/* Logo / brand */
+.brand{
+    position:absolute; right:.9rem; top:.9rem;
+    z-index:2;
+    display:flex; align-items:center; gap:.5rem;
+    color:#ffdcb5;
+    text-shadow:0 1px 2px rgba(0,0,0,.3);
+}
+.anchor{ font-size:1.4rem; transform:translateY(-1px); }
+.brand-title{ display:block; font-weight:700; letter-spacing:.12em; font-size:.9rem; }
+.brand-sub{ display:block; font-size:.65rem; opacity:.9; letter-spacing:.06em; }
+
+/* Dark panel holding the form + CTA */
+.panel{
+    background:var(--navy);
+    padding:1rem .9rem 1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    min-height:44vh;
+    border-top-left-radius:0;
+    border-top-right-radius:0;
 }
 
-.back-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 9999px;
-    display: grid;
-    place-items: center;
-    background: rgba(7, 29, 53, 0.7);
-    color: #fff;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 1;
-    user-select: none;
+/* Form */
+.form{ display:flex; flex-direction:column; gap:.6rem; }
+
+.label{
+    color:var(--muted);
+    font-size:.8rem;
+    letter-spacing:.02em;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #f6a43a; /* warm orange like the sample */
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-right: 6px;
+.input{
+    appearance:none;
+    width:100%;
+    background:#102743;
+    color:var(--text);
+    border:1px solid #1e3554;
+    border-radius:10px;
+    padding:.6rem .7rem;
+    font-size:.95rem;
 }
-.logo .mark {
-    width: 28px;
-    height: 28px;
-    border: 2px solid #f6a43a;
-    border-radius: 6px;
-    display: inline-block;
+.input:focus{
+    outline:2px solid rgba(242,155,68,.65);
+    outline-offset:0;
+    border-color:transparent;
 }
 
-/* --- Heading over image --- */
-.hero-title {
-    position: absolute;
-    top: 72px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ffe9cc;
-    font-size: 22px;
-    font-weight: 600;
-    text-align: center;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
-    z-index: 2;
+/* Small outlined "Log In/Go" button */
+.btn-outline{
+    align-self:flex-start;
+    background:var(--navy-700);
+    color:#ffdcb5;
+    border:2px solid var(--orange-600);
+    border-radius:10px;
+    padding:.45rem .8rem;
+    font-weight:700;
+    letter-spacing:.08em;
 }
 
-/* --- Form panel --- */
-.form-panel {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    background: #0a2842;            /* deep navy */
-    border-top: 3px solid #2aa7ff;  /* thin blue line like the image */
-    padding: 18px 16px 22px;
-    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35);
+/* Big rounded CTA at the bottom */
+.btn-cta{
+    margin-top:auto;
+    width:100%;
+    background:var(--orange);
+    color:#1b1b1b;
+    border:none;
+    border-radius:var(--radius);
+    padding:.9rem 1rem;
+    font-weight:700;
+    letter-spacing:.02em;
+    box-shadow:0 6px 14px rgba(242,155,68,.25);
 }
+.btn-cta:active{ transform:translateY(1px); }
 
-.form {
-    max-width: 540px;
-    margin: 0 auto;
-    color: #d8e4ef;
-}
-
-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 6px;
-    color: #c9d6e2;
-}
-
-.text-input {
-    width: 100%;
-    background: #ffffff;
-    color: #0b243b;
-    border: 1px solid #d9e2ec;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 16px;
-    outline: none;
-    transition: box-shadow 0.15s ease, border-color 0.15s ease;
-}
-
-.text-input:focus {
-    border-color: #7cc3ff;
-    box-shadow: 0 0 0 3px rgba(42, 167, 255, 0.25);
-}
-
-.spacer {
-    height: 16px;
-}
-
-/* style Chakra button via class hook */
-.submit-btn.chakra-button {
-    width: 100%;
-    border-radius: 10px;
-    font-weight: 700;
-    padding: 12px 16px;
-    background: #f6a43a;            /* orange */
-    color: #0b243b;
-}
-.submit-btn.chakra-button:hover {
-    filter: brightness(0.95);
-}
-
-/* --- Small tweaks for larger screens --- */
-@media (min-width: 640px) {
-    .hero-title { font-size: 26px; }
-    .form-panel { padding: 22px 24px 28px; }
+/* Larger screens: gently scale up while keeping mobile look */
+@media (min-width: 480px){
+    .hero{ height:60vh; }
+    .panel{ min-height:40vh; padding:1.2rem 1rem 1.1rem; }
 }

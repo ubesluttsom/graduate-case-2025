@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./home.css"; // ⬅️ add this import
 
 export default function Home() {
     const [guests, setGuests] = useState<any[]>([]);
@@ -16,27 +17,54 @@ export default function Home() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedGuestId) return;
-        // Navigate to explore, passing guestId in URL
         navigate(`/explore?guestId=${selectedGuestId}`);
     };
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Select a guest</h1>
-            <form onSubmit={handleSubmit}>
-                <select
-                    value={selectedGuestId}
-                    onChange={(e) => setSelectedGuestId(e.target.value)}
+        <div className="home">
+            {/* Hero / image header */}
+            <header className="hero">
+                <button className="back-btn" aria-label="Back">←</button>
+                <div className="brand">
+                    <div className="anchor" aria-hidden="true">⚓</div>
+                    <div className="brand-text">
+                        <span className="brand-title">EXPLORE</span>
+                        <span className="brand-sub">Polar Expeditions</span>
+                    </div>
+                </div>
+            </header>
+
+            {/* Form panel */}
+            <main className="panel">
+                <form className="form" onSubmit={handleSubmit}>
+                    <label className="label" htmlFor="guest">Select a guest</label>
+                    <select
+                        id="guest"
+                        className="input"
+                        value={selectedGuestId}
+                        onChange={(e) => setSelectedGuestId(e.target.value)}
+                    >
+                        <option value="">-- choose guest --</option>
+                        {guests.map((g) => (
+                            <option key={g.id} value={g.id}>
+                                {g.firstName} {g.lastName}
+                            </option>
+                        ))}
+                    </select>
+
+                    <button type="submit" className="btn-outline">
+                        Go
+                    </button>
+                </form>
+
+                <button
+                    type="button"
+                    className="btn-cta"
+                    onClick={() => navigate("/")}
                 >
-                    <option value="">-- choose guest --</option>
-                    {guests.map((g) => (
-                        <option key={g.id} value={g.id}>
-                            {g.firstName} {g.lastName}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Go</button>
-            </form>
+                    Front Page
+                </button>
+            </main>
         </div>
     );
 }
