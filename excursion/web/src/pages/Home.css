@@ -1,29 +1,37 @@
 :root{
-    --navy:#0f233a;           /* dark panel background */
+    --navy:#0f233a;
     --navy-700:#0b1a2b;
-    --orange:#f6a65b;         /* CTA / accents */
+    --orange:#f6a65b;
     --orange-600:#f29b44;
     --text:#fff;
     --muted:#b8c2d4;
     --radius:14px;
 }
 
-/* Phone frame container */
+/* Always navy, no white gutters */
+html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--navy);
+    color: var(--text);
+}
+* { box-sizing: border-box; }
+
+/* ===== Mobile-first ===== */
 .home{
     min-height:100vh;
-    max-width:430px;          /* keeps a phone-like width on desktop */
+    max-width:430px;
     margin:0 auto;
-    background:#000;          /* behind the hero image for safe edges */
+    background:transparent;
     display:flex;
     flex-direction:column;
     box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
 
-/* Hero image section */
 .hero{
     position:relative;
     height:56vh;
-    background-image:url("../assets/iceberg.png"); /* ← replace with your image path */
+    background-image:url("../assets/iceberg.png");
     background-size:cover;
     background-position:center;
     isolation:isolate;
@@ -44,7 +52,7 @@
     width:34px; height:34px; border-radius:999px;
 }
 
-/* Logo / brand */
+/* Brand */
 .brand{
     position:absolute; right:.9rem; top:.9rem;
     z-index:2;
@@ -56,7 +64,7 @@
 .brand-title{ display:block; font-weight:700; letter-spacing:.12em; font-size:.9rem; }
 .brand-sub{ display:block; font-size:.65rem; opacity:.9; letter-spacing:.06em; }
 
-/* Dark panel holding the form + CTA */
+/* Panel */
 .panel{
     background:var(--navy);
     padding:1rem .9rem 1.1rem;
@@ -64,12 +72,14 @@
     flex-direction:column;
     gap:1rem;
     min-height:44vh;
-    border-top-left-radius:0;
-    border-top-right-radius:0;
 }
 
 /* Form */
-.form{ display:flex; flex-direction:column; gap:.6rem; }
+.form{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+}
 
 .label{
     color:var(--muted);
@@ -77,51 +87,106 @@
     letter-spacing:.02em;
 }
 
+/* === Cleaner dropdown === */
 .input{
     appearance:none;
     width:100%;
     background:#102743;
     color:var(--text);
     border:1px solid #1e3554;
-    border-radius:10px;
-    padding:.6rem .7rem;
+    border-radius:var(--radius);
+    padding:.7rem .9rem;
     font-size:.95rem;
+    line-height:1.4;
+    font-weight:500;
+    transition: all .2s ease;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23f6a65b' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 1rem;
+    padding-right: 2rem;
+}
+.input:hover{
+    background-color:#132d52;
+    border-color:#2a4a77;
 }
 .input:focus{
-    outline:2px solid rgba(242,155,68,.65);
-    outline-offset:0;
-    border-color:transparent;
+    outline:none;
+    border-color: var(--orange-600);
+    box-shadow:0 0 0 3px rgba(242,155,68,.35);
+}
+.input option{
+    background: var(--navy-700);
+    color: var(--text);
+    padding:.5rem;
+    font-size:.9rem;
 }
 
-/* Small outlined "Log In/Go" button */
+/* Inline input + button wrapper */
+.form-row{
+    display:flex;
+    flex-direction:row;
+    gap:.6rem;
+}
+.form-row .input{
+    flex:1;
+}
+.form-row .btn-outline{
+    flex:0 0 auto;
+}
+
+/* Buttons */
 .btn-outline{
-    align-self:flex-start;
     background:var(--navy-700);
     color:#ffdcb5;
     border:2px solid var(--orange-600);
     border-radius:10px;
-    padding:.45rem .8rem;
+    padding:.55rem 1rem;
     font-weight:700;
     letter-spacing:.08em;
+    transition: all .2s ease;
+}
+.btn-outline:hover{
+    background:#132d52;
 }
 
-/* Big rounded CTA at the bottom */
 .btn-cta{
-    margin-top:auto;
-    width:100%;
-    background:var(--orange);
-    color:#1b1b1b;
-    border:none;
-    border-radius:var(--radius);
-    padding:.9rem 1rem;
-    font-weight:700;
-    letter-spacing:.02em;
+    margin-top:auto; width:100%;
+    background:var(--orange); color:#1b1b1b;
+    border:none; border-radius:var(--radius);
+    padding:.9rem 1rem; font-weight:700; letter-spacing:.02em;
     box-shadow:0 6px 14px rgba(242,155,68,.25);
 }
 .btn-cta:active{ transform:translateY(1px); }
 
-/* Larger screens: gently scale up while keeping mobile look */
-@media (min-width: 480px){
-    .hero{ height:60vh; }
-    .panel{ min-height:40vh; padding:1.2rem 1rem 1.1rem; }
+/* ===== Tablet+ : Full-width split ===== */
+@media (min-width: 768px){
+    .home{
+        max-width:none;
+        width:100%;
+        min-height:100vh;
+        margin:0;
+        box-shadow:none;
+        display:grid;
+        grid-template-columns: minmax(480px, 55vw) 1fr;
+        grid-template-rows: 100vh;
+    }
+
+    .hero{ height:auto; min-height:100%; border-radius:0; }
+    .panel{
+        min-height:100%;
+        padding:2rem clamp(1rem, 2.5vw, 2.25rem);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+    .panel .form{ max-width:520px; margin-inline:auto; }
+    .back-btn{ top:1rem; left:1rem; }
+    .brand{ right:1rem; top:1rem; }
+}
+@media (min-width: 1200px){
+    .home{ grid-template-columns: minmax(640px, 58vw) 1fr; }
+}
+@media (min-width: 1600px){
+    .home{ grid-template-columns: 1fr minmax(560px, 720px); }
 }

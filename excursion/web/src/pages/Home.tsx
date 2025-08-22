@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./home.css"; // ⬅️ add this import
+import "./home.css"; // ⬅️ styles
 
 export default function Home() {
     const [guests, setGuests] = useState<any[]>([]);
@@ -38,23 +38,27 @@ export default function Home() {
             <main className="panel">
                 <form className="form" onSubmit={handleSubmit}>
                     <label className="label" htmlFor="guest">Select a guest</label>
-                    <select
-                        id="guest"
-                        className="input"
-                        value={selectedGuestId}
-                        onChange={(e) => setSelectedGuestId(e.target.value)}
-                    >
-                        <option value="">-- choose guest --</option>
-                        {guests.map((g) => (
-                            <option key={g.id} value={g.id}>
-                                {g.firstName} {g.lastName}
-                            </option>
-                        ))}
-                    </select>
 
-                    <button type="submit" className="btn-outline">
-                        Go
-                    </button>
+                    {/* Dropdown + Go button inline */}
+                    <div className="form-row">
+                        <select
+                            id="guest"
+                            className="input"
+                            value={selectedGuestId}
+                            onChange={(e) => setSelectedGuestId(e.target.value)}
+                        >
+                            <option value="">-- choose guest --</option>
+                            {guests.map((g) => (
+                                <option key={g.id} value={g.id}>
+                                    {g.firstName} {g.lastName}
+                                </option>
+                            ))}
+                        </select>
+
+                        <button type="submit" className="btn-outline">
+                            Go
+                        </button>
+                    </div>
                 </form>
 
                 <button
