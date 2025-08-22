@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link as RouterLink, useSearchParams } from "react-router-dom";
-import { Box, Heading, Text, Stack, Spinner, Link, Alert, AlertIcon, Button, HStack, useDisclosure } from "@chakra-ui/react";
+import { Box, Heading, Text, Stack, Spinner, Link, Alert, AlertIcon, Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import RoomSummary from "../components/RoomSummary";
 
 type Event = {
@@ -35,22 +35,51 @@ export default function Explore() {
     const guestId = searchParams.get("guestId") ?? "";
 
     const [guest, setGuest] = useState<Guest | null>(null);
+    const [roommates, setRoommates] = useState<Guest[]>([]);
     const [events, setEvents] = useState<Event[]>([]);
     const [eventsLoading, setEventsLoading] = useState(true);
     const [eventsError, setEventsError] = useState<string | null>(null);
 
     const { isOpen: isRoomSummaryOpen, onOpen: onRoomSummaryOpen, onClose: onRoomSummaryClose } = useDisclosure();
 
-    // Fetch guest (if guestId present)
+    // Fetch guest and roommates (if guestId present)
     useEffect(() => {
         if (!guestId) return;
-        fetch(`${API_BASE}/guests/${guestId}`)
-            .then((res) => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.json();
-            })
-            .then(setGuest)
-            .catch((err) => console.error("Failed to fetch guest:", err));
+        
+        async function fetchGuestAndRoommates() {
+            try {
+                // First fetch the guest
+                const guestRes = await fetch(`${API_BASE}/guests/${guestId}`);
+                if (!guestRes.ok) throw new Error(`HTTP ${guestRes.status}`);
+                const guestData: Guest = await guestRes.json();
+                setGuest(guestData);
+
+                // If guest has a room, fetch roommates
+                if (guestData.roomId) {
+                    const roomRes = await fetch(`${API_BASE}/rooms/${guestData.roomId}`);
+                    if (roomRes.ok) {
+                        const roomData = await roomRes.json();
+                        
+                        // Fetch all guests in the room
+                        if (roomData.guestIds && roomData.guestIds.length > 0) {
+                            const roommatePromises = roomData.guestIds
+                                .filter((id: string) => id !== guestId) // Exclude current guest
+                                .map(async (id: string) => {
+                                    const res = await fetch(`${API_BASE}/guests/${id}`);
+                                    return res.ok ? await res.json() : null;
+                                });
+                            
+                            const roommateData = await Promise.all(roommatePromises);
+                            setRoommates(roommateData.filter(Boolean));
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch guest or roommates:", err);
+            }
+        }
+
+        fetchGuestAndRoommates();
     }, [guestId]);
 
     // Fetch events from backend
@@ -115,31 +144,118 @@ export default function Explore() {
                 <Stack spacing={4}>
                     {events.map((event) => {
                         const search = guestId ? `?guestId=${guestId}` : "";
-                        const remainingSpots = event.availableSpots - (event.guestIds?.length ?? 0);
+                        const totalSignedUp = event.guestIds?.length ?? 0;
+                        const remainingSpots = event.availableSpots - totalSignedUp;
+                        
+                        // Check if current guest is signed up
+                        const isCurrentGuestSignedUp = guest && event.guestIds?.includes(guest.id);
+                        
+                        // Check which roommates are signed up
+                        const signedUpRoommates = roommates.filter(roommate => 
+                            event.guestIds?.includes(roommate.id)
+                        );
+                        
                         return (
-                            <Link
-                                as={RouterLink}
-                                to={`/events/${event.id}${search}`} // keep guestId in URL
+                            <Box
                                 key={event.id}
-                                style={{ textDecoration: "none" }}
+                                p={4}
+                                borderWidth="1px"
+                                borderRadius="lg"
+                                boxShadow="md"
+                                bg="white"
+                                position="relative"
                             >
-                                <Box
-                                    p={4}
-                                    borderWidth="1px"
-                                    borderRadius="lg"
-                                    boxShadow="md"
-                                    bg="white"
-                                    _hover={{ bg: "blue.50" }}
-                                >
-                                    <Heading size="sm" mb={2}>{event.name}</Heading>
-                                    <Text>
-                                        <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
-                                    </Text>
-                                    <Text>
-                                        <strong>Available Spots:</strong> {remainingSpots}
-                                    </Text>
-                                </Box>
-                            </Link>
+                                {/* Status indicator */}
+                                {isCurrentGuestSignedUp && (
+                                    <Box
+                                        position="absolute"
+                                        top={2}
+                                        right={2}
+                                        bg="green.500"
+                                        color="white"
+                                        px={2}
+                                        py={1}
+                                        borderRadius="md"
+                                        fontSize="xs"
+                                        fontWeight="bold"
+                                    >
+                                        ✓ Signed up
+                                    </Box>
+                                )}
+                                
+                                <VStack align="stretch" spacing={3}>
+                                    <Box>
+                                        <Heading size="sm" mb={2}>{event.name}</Heading>
+                                        <Text fontSize="sm" color="gray.600" mb={2}>
+                                            {event.description}
+                                        </Text>
+                                    </Box>
+                                    
+                                    <HStack justify="space-between" fontSize="sm">
+                                        <VStack align="start" spacing={1}>
+                                            <Text>
+                                                <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
+                                            </Text>
+                                            <Text>
+                                                <strong>Time:</strong> {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </Text>
+                                        </VStack>
+                                        <VStack align="end" spacing={1}>
+                                            <Text color={remainingSpots > 0 ? "green.600" : "red.600"} fontWeight="medium">
+                                                {remainingSpots > 0 
+                                                    ? `${remainingSpots} spots left` 
+                                                    : "Fully booked"}
+                                            </Text>
+                                            <Text fontSize="xs" color="gray.500">
+                                                {totalSignedUp} of {event.availableSpots} taken
+                                            </Text>
+                                            {event.price && (
+                                                <Text fontWeight="medium">
+                                                    ${event.price.toFixed(2)}
+                                                </Text>
+                                            )}
+                                        </VStack>
+                                    </HStack>
+                                    
+                                    {/* Roommate status */}
+                                    {signedUpRoommates.length > 0 && (
+                                        <Text fontSize="sm" color="blue.600">
+                                            👥 {signedUpRoommates.map(r => r.firstName).join(', ')} {signedUpRoommates.length === 1 ? 'is' : 'are'} signed up
+                                        </Text>
+                                    )}
+                                    
+                                    <HStack justify="space-between" align="center">
+                                        <Button
+                                            as={RouterLink}
+                                            to={`/events/${event.id}${search}`}
+                                            size="sm"
+                                            colorScheme="blue"
+                                            variant="outline"
+                                        >
+                                            View Details
+                                        </Button>
+                                        
+                                        {isCurrentGuestSignedUp ? (
+                                            <Text fontSize="sm" color="green.600" fontWeight="medium">
+                                                You're signed up!
+                                            </Text>
+                                        ) : remainingSpots > 0 ? (
+                                            <Button
+                                                as={RouterLink}
+                                                to={`/events/${event.id}${search}`}
+                                                size="sm"
+                                                colorScheme="green"
+                                            >
+                                                Sign Up
+                                            </Button>
+                                        ) : (
+                                            <Text fontSize="sm" color="red.600" fontWeight="medium">
+                                                Fully booked
+                                            </Text>
+                                        )}
+                                    </HStack>
+                                </VStack>
+                            </Box>
                         );
                     })}
                 </Stack>
